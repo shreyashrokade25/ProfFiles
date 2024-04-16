@@ -7,16 +7,24 @@ function Header() {
   return (
     <header className='header'>
       <div className='header-data'>
-          <Link to="/add-activity" className="button-link">
+          <Link to="/view-activity" className="button-link spacer">
             <BsActivity className="icon" /> Personal Details
           </Link>
-          <span className="spacer"></span>
-          <Link to="/add-activity" className="button-link">
+
+          <Link to="/" className="button-link spacer">
             <BsActivity className="icon" /> Educational Details
-          </Link>         <span className="spacer"></span>
+          </Link>
           
-          <Link to="/add-activity" className="button-link">
-            <BsActivity className="icon" /> Activities
+          <Link to="/" className="button-link spacer">
+            <BsActivity className="icon" /> Curricular & Co-curricular Details
+          </Link>
+          
+          <Link to="/add-activity" className="button-link spacer">
+            <BsActivity className="icon" /> Achievement & Certification
+          </Link>
+
+          <Link to="/project" className="button-link spacer">
+            <BsActivity className="icon" /> Project Details
           </Link>
       </div>
   

@@ -8,12 +8,11 @@ function Header() {
     <header className='header'>
       <div className='header-data'>
 
-          <Link to="/" className="button-link">
+          <Link to="/" className="button-link spacer">
             <BsActivity className="icon" /> Personal Details
           </Link>
-          <span className="spacer"></span>
-          <Link to="/" className="button-link">
 
+          <Link to="/" className="button-link spacer">
             <BsActivity className="icon" /> Educational Details
           </Link>
           
@@ -21,12 +20,12 @@ function Header() {
             <BsActivity className="icon" /> Curricular & Co-curricular Details
           </Link>
 
-          <Link to="/add-achievements" className="button-link">
+          <Link to="/add-achievements" className="button-link spacer">
             <BsPersonPlus className="icon" /> Achievements and Certificatios
+          </Link>
 
           <Link to="/project" className="button-link spacer">
             <BsActivity className="icon" /> Project Details
-
           </Link>
       </div>
   

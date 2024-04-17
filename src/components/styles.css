@@ -1,0 +1,56 @@
+
+/* Form */
+.form-container {
+  grid-area: main;
+  padding: 30px;
+}
+
+.fieldset{
+  padding: 20px;
+  margin: auto;
+  border: 1px solid #8f5a1d;
+  border-radius: 1%;
+
+}
+
+.form-container label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-container input[type="text"],
+.form-container input[type="textarea"],
+.form-container input[type="date"],
+.form-container input[type="url"],
+.form-container input[type="file"],
+.form-container textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #d39c9c;
+  border-radius: 5px;
+  
+}
+
+.form-container textarea {
+  resize: vertical; /* Allow vertical resizing */
+}
+
+.form-container button[type="submit"] {
+  background-color: #1974a8; /* Dark shade of blue */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form-container button[type="submit"]:hover {
+  background-color: #9fb2ce; /* Darker shade of blue on hover */
+}
+
+.error{
+  color: red;
+}
+/* Form Ends */

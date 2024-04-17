@@ -21,8 +21,8 @@ function Sidebar({ openSidebarToggle, toggleSidebar }) {
         </li>
         <li className="sidebar-list-item">
           {/* Link to navigate to the Add Achievement page */}
-          <Link to="/add-activity">
-            <BsPersonPlus className="icon" /> Activities
+          <Link to="/add-achievements">
+            <BsPersonPlus className="icon" /> Achievements and Certifications
           </Link>
         </li>
       </ul>

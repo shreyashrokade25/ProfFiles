@@ -4,9 +4,8 @@ import { Routes ,Route } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import Home from './components/Home';
-import ActivityForm from './components/ActivityForm';
 import ActivityView from './components/ActivityView';
+import AchievementForm from './components/AchievementForm';
 
 function App() {
   return (
@@ -15,9 +14,9 @@ function App() {
         <Header />
         <Sidebar />
         <Routes>
-          <Route path="/" exact element={<Home />} />
-          <Route path="/add-activity" element={<ActivityForm/>} />
-          <Route path="/view-activity" element={<ActivityView />}/>
+          
+          <Route path="/add-achievements" element={<AchievementForm/>} />
+          <Route path="/" element={<ActivityView />}/>
 
           
 

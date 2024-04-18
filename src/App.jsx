@@ -13,11 +13,9 @@ function App() {
   return (
     <Router>
       <div className='grid-container'>
-        <Header />
         <Sidebar />
+        <Header />
         <Routes>
-
-          
           <Route path="/add-achievements" element={<AchievementForm/>} />
           <Route path="/" element={<ActivityView />}/>
           <Route path="/project" element={<Project/>} />

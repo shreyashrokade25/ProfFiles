@@ -4,7 +4,7 @@ import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 
-function AchievementForm() {
+function AchievementForm({onSubmit}) {
   const initialValues = {
     title: "",
     description: "",
@@ -57,11 +57,14 @@ function AchievementForm() {
     percentile: Yup.string().required("Percentile is required"),
   });
 
-  const handleSubmit = (values, { resetForm }) => {
-    // Handle form submission, e.g., send data to backend
-    console.log(values);
-    // Reset the form after submission
-    resetForm();
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      await onSubmit(values);
+      setSubmitting(false);
+    } catch (error) {
+      console.error('Submission error:', error);
+      setSubmitting(false);
+    }
   };
 
   return (

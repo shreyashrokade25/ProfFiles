@@ -1,36 +1,41 @@
-import React from 'react'
-import { BsActivity , BsPersonPlus}
-from 'react-icons/bs'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { BsActivity, BsPersonPlus } from 'react-icons/bs';
 
 function Header() {
   return (
     <header className='header'>
-      <div className='header-data'>
-
-          <Link to="/" className="button-link spacer">
-            <BsActivity className="icon" /> Personal Details
-          </Link>
-
-          <Link to="/" className="button-link spacer">
-            <BsActivity className="icon" /> Educational Details
-          </Link>
-          
-          <Link to="/" className="button-link spacer">
-            <BsActivity className="icon" /> Curricular & Co-curricular Details
-          </Link>
-
-          <Link to="/add-achievements" className="button-link spacer">
-            <BsPersonPlus className="icon" /> Achievements and Certificatios
-          </Link>
-
-          <Link to="/project" className="button-link spacer">
-            <BsActivity className="icon" /> Project Details
-          </Link>
-      </div>
-  
+      <nav className='navbar'>
+        <ul className='navbar-list'>
+          <li className='navbar-item'>
+            <Link to="/" className="navbar-link">
+              <BsActivity className="icon" /> Personal Details
+            </Link>
+          </li>
+          <li className='navbar-item'>
+            <Link to="/" className="navbar-link">
+              <BsActivity className="icon" /> Educational Details
+            </Link>
+          </li>
+          <li className='navbar-item'>
+            <Link to="/" className="navbar-link">
+              <BsActivity className="icon" /> Curricular & Co-curricular Details
+            </Link>
+          </li>
+          <li className='navbar-item'>
+            <Link to="/add-achievements" className="navbar-link">
+              <BsPersonPlus className="icon" /> Achievements and Certificatios
+            </Link>
+          </li>
+          <li className='navbar-item'>
+            <Link to="/project" className="navbar-link">
+              <BsActivity className="icon" /> Project Details
+            </Link>
+          </li>
+        </ul>
+      </nav>
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;

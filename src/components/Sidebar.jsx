@@ -5,7 +5,7 @@ import { BsPersonPlus,  BsFillAlarmFill, BsGrid1X2Fill} from "react-icons/bs";
 function Sidebar({ openSidebarToggle, toggleSidebar }) {
   return (
     <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive" : ""}>
-      <div className="sidebar-title">
+      <div className="sidebar-title sidebar">
         <div className="sidebar-brand">
           < BsFillAlarmFill className="icon_header" />
           Student Extra-curricular Activities

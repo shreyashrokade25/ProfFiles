@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../components/styles.css";
-import { Formik, Form, FieldArray, Field } from "formik";
+import { Formik, Form, FieldArray, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from 'react-router-dom';
+import { AchievementContext } from './AchievementContext';
+import Label from './Label';
 
 function AchievementForm() {
+
+  const { achievementData, setAchievementData } = useContext(AchievementContext); // Use the context
+  const navigate = useNavigate();
+  console.log(achievementData);
+
   const initialValues = {
     achievementscertificate: [
       {
@@ -44,111 +52,122 @@ function AchievementForm() {
   };
 
   const validationSchema = Yup.object().shape({
-    achievementscertificate: Yup.array().of(
-      Yup.object().shape({
-        title: Yup.string()
-          .required("Title is required")
-          .min(2, "Title must be at least 2 characters")
-          .max(20, "Title must be less than 20 characters"),
-        description: Yup.string()
-          .required("Achievement Description is required")
-          .max(50, "Description should contain less than 50 characters."),
-        type: Yup.string().required("Type of achievement is required"),
-        provider: Yup.string().required("Provider is required"),
-        date: Yup.date()
-          .required("Date of achievement is required")
-          .max(
-            new Date(),
-            "Achievement/Certification/Course completion date cannot be in the future"
-          ),
-        duration: Yup.string()
-          .required("Duration is required")
-          .max(8, "Duration must be less than 8 characters"),
-        platform: Yup.string().required("Platform is required"),
-        certificateURL: Yup.string()
-          .required("Certificate URL is required.")
-          .url("Invalid URL format"),
-        skills: Yup.string()
-          .required("Skill is required")
-          .min(3, "Add at least one skill."),
-      })
-    ),
-    internships: Yup.array().of(
-      Yup.object().shape({
-        internshiptitle: Yup.string()
-          .required("Internship title is required")
-          .min(2, "Title must be at least 2 characters"),
-        company: Yup.string()
-          .required("Company Name is required")
-          .min(2, "company name must contain 2 character."),
-        startDate: Yup.date()
-          .required("Please enter start date")
-          .max(Yup.ref("endDate"), "Start date must be before end date")
-          .max(new Date(), "Date must be in past"),
-        endDate: Yup.date()
-          .required("Please enter end date")
-          .min(Yup.ref("startDate"), "End date must be after start date")
-          .max(new Date(), "Date must be in past"),
-        responsibilities: Yup.string().required(
-          "Roles/Responsibilities is required"
-        ),
-        achievements: Yup.string()
-          .required("Achievement is required")
-          .min(2, "Achievements must contain 2 characters."),
-        supervisor: Yup.string()
-          .required("Supervisor name is required")
-          .min(2, "Supervisor name should be at least 2 character."),
-        feedback: Yup.string()
-          .required("Feedback is required")
-          .min(5, "feedback must contain 5 character.")
-          .max(20, "Feedback must be less than 20 character."),
-        certificate: Yup.mixed().required("Certificate is required"),
-      })
-    ),
+    // achievementscertificate: Yup.array().of(
+    //   Yup.object().shape({
+    //     title: Yup.string()
+    //       .required("Title is required")
+    //       .min(2, "Title must be at least 2 characters")
+    //       .max(20, "Title must be less than 20 characters"),
+    //     description: Yup.string()
+    //       .required("Achievement Description is required")
+    //       .max(50, "Description should contain less than 50 characters."),
+    //     type: Yup.string().required("Type of achievement is required"),
+    //     provider: Yup.string().required("Provider is required"),
+    //     date: Yup.date()
+    //       .required("Date of achievement is required")
+    //       .max(
+    //         new Date(),
+    //         "Achievement/Certification/Course completion date cannot be in the future"
+    //       ),
+    //     duration: Yup.string()
+    //       .required("Duration is required")
+    //       .max(8, "Duration must be less than 8 characters"),
+    //     platform: Yup.string().required("Platform is required"),
+    //     certificateURL: Yup.string()
+    //       .required("Certificate URL is required.")
+    //       .url("Invalid URL format"),
+    //     skills: Yup.string()
+    //       .required("Skill is required")
+    //       .min(3, "Add at least one skill."),
+    //   })
+    // ),
+    // internships: Yup.array().of(
+    //   Yup.object().shape({
+    //     internshiptitle: Yup.string()
+    //       .required("Internship title is required")
+    //       .min(2, "Title must be at least 2 characters"),
+    //     company: Yup.string()
+    //       .required("Company Name is required")
+    //       .min(2, "company name must contain 2 character."),
+    //     startDate: Yup.date()
+    //       .required("Please enter start date")
+    //       .max(Yup.ref("endDate"), "Start date must be before end date")
+    //       .max(new Date(), "Date must be in past"),
+    //     endDate: Yup.date()
+    //       .required("Please enter end date")
+    //       .min(Yup.ref("startDate"), "End date must be after start date")
+    //       .max(new Date(), "Date must be in past"),
+    //     responsibilities: Yup.string().required(
+    //       "Roles/Responsibilities is required"
+    //     ),
+    //     achievements: Yup.string()
+    //       .required("Achievement is required")
+    //       .min(2, "Achievements must contain 2 characters."),
+    //     supervisor: Yup.string()
+    //       .required("Supervisor name is required")
+    //       .min(2, "Supervisor name should be at least 2 character."),
+    //     feedback: Yup.string()
+    //       .required("Feedback is required")
+    //       .min(5, "feedback must contain 5 character.")
+    //       .max(20, "Feedback must be less than 20 character."),
+    //     certificate: Yup.mixed().required("Certificate is required"),
+    //   })
+    // ),
 
-    exams: Yup.array().of(
+    // exams: Yup.array().of(
 
-      Yup.object().shape({
+    //   Yup.object().shape({
 
-        examName: Yup.string()
-        .required("Exam Name is required")
-        .min(2, "Exam Name must contain 2 character."),
-      examDate: Yup.date()
-        .required("Exam Date is required")
-        .max(new Date(), "Date must be in past."),
-      score: Yup.string()
-        .required("Score is required")
-        .matches(/^\d+$/, "Score only numbers are allowed"),
-      rank: Yup.string()
-        .required("Rank is required")
-        .matches(/^\d+$/, "Rank only numbers are allowed"),
-      percentile: Yup.string()
-        .required("Percentile is required")
-        .matches(/^\d+$/, "Percentage only numbers are allowed")
-        .min(0, "Percentage cannot be less than 0")
-        .max(100, "Percentage cannot be greater than 100"),
-      })
-    ),
+    //     examName: Yup.string()
+    //     .required("Exam Name is required")
+    //     .min(2, "Exam Name must contain 2 character."),
+    //   examDate: Yup.date()
+    //     .required("Exam Date is required")
+    //     .max(new Date(), "Date must be in past."),
+    //   score: Yup.string()
+    //     .required("Score is required")
+    //     .matches(/^\d+$/, "Score only numbers are allowed"),
+    //   rank: Yup.string()
+    //     .required("Rank is required")
+    //     .matches(/^\d+$/, "Rank only numbers are allowed"),
+    //   percentile: Yup.string()
+    //     .required("Percentile is required")
+    //     .matches(/^\d+$/, "Percentage only numbers are allowed")
+    //     .min(0, "Percentage cannot be less than 0")
+    //     .max(100, "Percentage cannot be greater than 100"),
+    //   })
+    // ),
     
   });
 
   const handleSubmit = async (values) => {
     console.log("Values Data", values);
 
-    // Convert values object to FormData
-    const formData = new FormData();
-    Object.keys(values).forEach((key) => {
-      if (Array.isArray(values[key])) {
-        values[key].forEach((item, index) => {
-          Object.keys(item).forEach((subKey) => {
-            formData.append(`${key}[${index}][${subKey}]`, item[subKey]);
+    try{   
+      // Convert values object to FormData
+      const formData = new FormData();
+      Object.keys(values).forEach((key) => {
+        if (Array.isArray(values[key])) {
+          values[key].forEach((item, index) => {
+            Object.keys(item).forEach((subKey) => {
+              formData.append(`${key}[${index}][${subKey}]`, item[subKey]);
+            });
           });
-        });
-      } else {
-        formData.append(key, values[key]);
-      }
-    });
-  };
+        } else {
+          formData.append(key, values[key]);
+        }
+      });
+      // Store the achievement data in the context
+      setAchievementData(values);
+      // Navigate to the ProjectDetails page
+      navigate('/project', { state: { achievementData: values } });
+
+    } catch (error) {
+      console.error("Achievement submission failed", error);
+      setSubmitting(false);
+      setErrors({ submit: "Achievement submission failed" });
+    }
+ };
 
   return (
     <div className="form-container">
@@ -157,7 +176,7 @@ function AchievementForm() {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ values, errors, touched, handleBlur, handleChange }) => (
+        {({ isSubmitting, values, errors, touched, handleBlur, handleChange }) => (
           <Form>
             <FieldArray name="achievementscertificate">
               {({ push, remove }) => (
@@ -790,7 +809,7 @@ function AchievementForm() {
 
            
             <br />
-            <button type="submit">Submit</button>
+            <button type="submit" disabled={isSubmitting}>Submit</button>
           </Form>
         )}
       </Formik>

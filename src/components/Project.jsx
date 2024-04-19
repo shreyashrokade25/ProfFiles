@@ -60,6 +60,7 @@ function Project({ onSubmit }) {
         // endDate: Yup.date().required('End date is required'),
     });
 
+
     const handleSubmit = (projectData) => {
         try {
 

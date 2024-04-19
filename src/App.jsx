@@ -5,16 +5,24 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import ActivityView from './components/ActivityView';
 import AchievementForm from './components/AchievementForm';
+import Curricular from './components/Curricular';
 import Project from './components/Project';
 import { AchievementProvider } from './components/AchievementContext'; // Import the AchievementProvider
 
 function App() {
+
  return (
     <AchievementProvider> {/* Wrap the app with the AchievementProvider */}
       <Router>
         <div className='grid-container'>
           <Sidebar />
           <Header />
+             <Routes>
+            {/* Route for CurricularForm */}
+            <Route
+              path="/curricular"
+              element={<Curricular />}
+            />
           <Routes>
             {/* Route for AchievementForm */}
             <Route
@@ -36,6 +44,7 @@ function App() {
       </Router>
     </AchievementProvider>
  );
+
 }
 
 export default App;

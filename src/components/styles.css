@@ -50,6 +50,19 @@
   background-color: #9fb2ce; /* Darker shade of blue on hover */
 }
 
+.fieldset button{
+  background-color: #993b0f; /* Dark shade of blue */
+  color: white;
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.fieldset button:hover{
+  background-color: #b47348;
+}
 .error{
   color: red;
 }

@@ -34,7 +34,7 @@ const Project = ({ onSubmit }) => {
             then: (schema) => schema.required('Other category is required'),
             otherwise: (schema) => schema.notRequired(),
         }),
-        
+
         githubRepoURL: Yup.string().url('Invalid URL format'),
         technologiesUsed: Yup.string().required('Technologies used is required'),
         otherTechnologies: Yup.string().when('technologiesUsed', {
@@ -47,20 +47,20 @@ const Project = ({ onSubmit }) => {
         endDate: Yup.date().required('End date is required'),
     });
 
-    const handleSubmit = async   (values, { setSubmitting }) => {
-        try{
+    const handleSubmit = async (values, { setSubmitting }) => {
+        try {
             if (!values.projectCategory.includes('other')) {
                 values.otherCategory = '';
             }
-            
+
             if (!values.technologiesUsed.includes('other')) {
                 values.otherTechnologies = '';
             }
-            
+
             // alert(JSON.stringify(values, null, 2));
             await onSubmit(values);
             setSubmitting(false);
- 
+
 
         } catch (error) {
             // Handle errors, if any

@@ -18,7 +18,7 @@ function Header() {
             </Link>
           </li>
           <li className='navbar-item'>
-            <Link to="/" className="navbar-link">
+            <Link to="/curricular" className="navbar-link">
               <BsActivity className="icon" /> Curricular & Co-curricular Details
             </Link>
           </li>

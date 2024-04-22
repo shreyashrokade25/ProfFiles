@@ -23,7 +23,6 @@ function App() {
               path="/curricular"
               element={<Curricular />}
             />
-          <Routes>
             {/* Route for AchievementForm */}
             <Route
               path="/add-achievements"

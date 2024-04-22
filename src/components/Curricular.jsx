@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import Label from './Label'; // Import the Label component
+import { useNavigate } from 'react-router-dom';
+import { AchievementContext } from './AchievementContext';
 import axios from 'axios';
 
-const Curricular = ({ onSubmit  = () => {}}) => {
 
-    const [submittedData, setSubmittedData] = useState(null)
+function Curricular() {
+
+    const { setClubData, setEventData, setCommunityServiceData, setWorkshopData } = useContext(AchievementContext); // Use the context
+    const navigate = useNavigate();
 
     const initialValues = {
         clubs: [{ clubName: '', positionHeld: '', activities: '' }],
@@ -16,63 +20,75 @@ const Curricular = ({ onSubmit  = () => {}}) => {
     };
 
     const validationSchema = Yup.object().shape({
-        clubs: Yup.array().of(
-            Yup.object().shape({
-                clubName: Yup.string(),
-                positionHeld: Yup.string(),
-                activities: Yup.string(),
-            })
-        ),
-        events: Yup.array().of(
-            Yup.object().shape({
-                eventName: Yup.string(),
-                eventType: Yup.string(),
-                otherEventType: Yup.string(),
-                participationLevel: Yup.string(),
-                achievement: Yup.string(),
-                yearParticipated: Yup.string().matches(/^[0-9]+$/, 'Year participated should contain only numbers'),
-                certificate: Yup.string(),
-            })
-        ),
-        communityServices: Yup.array().of(
-            Yup.object().shape({
-                activityName: Yup.string(),
-                organization: Yup.string(),
-                description: Yup.string(),
-                duration: Yup.object().shape({
-                    from: Yup.date(),
-                    to: Yup.date(),
-                }),
-                impact: Yup.string(),
-                documentation: Yup.string(),
-            })
-        ),
-        workshops: Yup.array().of(
-            Yup.object().shape({
-                title: Yup.string(),
-                organizer: Yup.string(),
-                description: Yup.string(),
-                dates: Yup.object().shape({
-                    from: Yup.date(),
-                    to: Yup.date(),
-                }),
-                skills: Yup.string(),
-                documentation: Yup.string(),
-            })
-        ),
+        // clubs: Yup.array().of(
+        //     Yup.object().shape({
+        //         clubName: Yup.string(),
+        //         positionHeld: Yup.string(),
+        //         activities: Yup.string(),
+        //     })
+        // ),
+        // events: Yup.array().of(
+        //     Yup.object().shape({
+        //         eventName: Yup.string(),
+        //         eventType: Yup.string(),
+        //         otherEventType: Yup.string(),
+        //         participationLevel: Yup.string(),
+        //         achievement: Yup.string(),
+        //         yearParticipated: Yup.string().matches(/^[0-9]+$/, 'Year participated should contain only numbers'),
+        //         certificate: Yup.string(),
+        //     })
+        // ),
+        // communityServices: Yup.array().of(
+        //     Yup.object().shape({
+        //         activityName: Yup.string(),
+        //         organization: Yup.string(),
+        //         description: Yup.string(),
+        //         duration: Yup.object().shape({
+        //             from: Yup.date(),
+        //             to: Yup.date(),
+        //         }),
+        //         impact: Yup.string(),
+        //         documentation: Yup.string(),
+        //     })
+        // ),
+        // workshops: Yup.array().of(
+        //     Yup.object().shape({
+        //         title: Yup.string(),
+        //         organizer: Yup.string(),
+        //         description: Yup.string(),
+        //         dates: Yup.object().shape({
+        //             from: Yup.date(),
+        //             to: Yup.date(),
+        //         }),
+        //         skills: Yup.string(),
+        //         documentation: Yup.string(),
+        //     })
+        // ),
     });
 
-    const handleSubmit = async (values, { setSubmitting }) => {
+    const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+        console.log("Values Data", values);
         try {
-            if (typeof onSubmit === 'function') {
-                await onSubmit(values);
-            }
-            setSubmittedData(values);
-            console.log(values);
-            setSubmitting(false);
+            const combinedData = {
+                clubs: values.clubs,
+                events: values.events,
+                communityService: values.communityService,
+                workshop: values.workshops,
+            };
+
+            // Update the context with all combined data
+            setClubData(combinedData.clubs);
+            setEventData(combinedData.events);
+            setCommunityServiceData(combinedData.communityService);
+            setWorkshopData(combinedData.workshop);
+
+            // Pass all combined data in the navigation state
+            navigate('/add-achievements', { state: { combinedData } });
+
         } catch (error) {
-            console.error('Submission error:', error);
+            console.error("Achievement submission failed", error);
             setSubmitting(false);
+            setErrors({ submit: "Achievement submission failed" });
         }
     };
 
@@ -119,6 +135,7 @@ const Curricular = ({ onSubmit  = () => {}}) => {
                                 </fieldset>
                             )}
                         </FieldArray>
+                        <br />
                         <FieldArray name="events">
                             {(arrayHelpers) => (
                                 <fieldset className="fieldset">
@@ -212,7 +229,7 @@ const Curricular = ({ onSubmit  = () => {}}) => {
                                 </fieldset>
                             )}
                         </FieldArray>
-
+                        <br />
                         <FieldArray name="communityService">
                             {(arrayHelpers) => (
                                 <fieldset className="fieldset">
@@ -287,10 +304,11 @@ const Curricular = ({ onSubmit  = () => {}}) => {
                                 </fieldset>
                             )}
                         </FieldArray>
-
+                        <br />
                         <FieldArray name="workshops">
                             {arrayHelpers => (
                                 <fieldset className="fieldset">
+                                    <legend>Section 4: Workshop & Training Details</legend>
                                     {values.workshops.map((workshop, index) => (
                                         <div key={index}>
                                             <div>
@@ -361,8 +379,8 @@ const Curricular = ({ onSubmit  = () => {}}) => {
                                 </fieldset>
                             )}
                         </FieldArray>
-
-                        <button type="submit">Save</button>
+                        <br />
+                        <button type="submit" disabled={isSubmitting} >Save</button>
 
                     </Form>
                 )}

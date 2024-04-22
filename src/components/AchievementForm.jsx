@@ -7,10 +7,8 @@ import { AchievementContext } from './AchievementContext';
 import Label from './Label';
 
 function AchievementForm() {
-
-  const { achievementData, setAchievementData } = useContext(AchievementContext); // Use the context
+  const {setAchievementData, setInternshipData, setExamData } = useContext(AchievementContext); // Use the context
   const navigate = useNavigate();
-  console.log(achievementData);
 
   const initialValues = {
     achievementscertificate: [
@@ -137,31 +135,28 @@ function AchievementForm() {
     //     .max(100, "Percentage cannot be greater than 100"),
     //   })
     // ),
-    
+
   });
 
-  const handleSubmit = async (values) => {
+ const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     console.log("Values Data", values);
+    // console.log("Achievement Data", achievementData);
 
-    try{   
-      // Convert values object to FormData
-      const formData = new FormData();
-      Object.keys(values).forEach((key) => {
-        if (Array.isArray(values[key])) {
-          values[key].forEach((item, index) => {
-            Object.keys(item).forEach((subKey) => {
-              formData.append(`${key}[${index}][${subKey}]`, item[subKey]);
-            });
-          });
-        } else {
-          formData.append(key, values[key]);
-        }
-      });
-      // Store the achievement data in the context
-      setAchievementData(values);
-      // Navigate to the ProjectDetails page
-      navigate('/project', { state: { achievementData: values } });
-
+    try {
+      const combinedData = {
+        achievementsCertificates: values.achievementscertificate,
+        internships: values.internships,
+        exams: values.exams,
+       };
+       
+       // Update the context with all combined data
+       setAchievementData(combinedData.achievementsCertificates);
+       setInternshipData(combinedData.internships); // Assuming you have setInternshipData in your context
+       setExamData(combinedData.exams); // Assuming you have setExamData in your context
+       
+       // Pass all combined data in the navigation state
+       navigate('/project', { state: { combinedData } });
+       
     } catch (error) {
       console.error("Achievement submission failed", error);
       setSubmitting(false);
@@ -186,7 +181,7 @@ function AchievementForm() {
                   </legend>
                   {values.achievementscertificate.map((achievement, index) => (
                     <div key={index}>
-                      
+
                       <div>
                         <label>{`Achievement Title ${index + 1}:`}</label>
                         <Field
@@ -199,11 +194,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].title &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].title ? (
+                          errors.achievementscertificate[index] &&
+                          errors.achievementscertificate[index].title &&
+                          touched.achievementscertificate &&
+                          touched.achievementscertificate[index] &&
+                          touched.achievementscertificate[index].title ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].title}
                           </p>
@@ -213,7 +208,7 @@ function AchievementForm() {
                         <label>Achievement Description:</label>
                         <Field
                           as="textarea"
-                           name={`achievementscertificate[${index}].description`}
+                          name={`achievementscertificate[${index}].description`}
                           value={achievement.description}
                           autoComplete="off"
                           placeholder="Describe the achievement or certificate"
@@ -221,11 +216,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].description &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].description ? (
+                          errors.achievementscertificate[index] &&
+                          errors.achievementscertificate[index].description &&
+                          touched.achievementscertificate &&
+                          touched.achievementscertificate[index] &&
+                          touched.achievementscertificate[index].description ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].description}
                           </p>
@@ -243,11 +238,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].type &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].type ? (
+                          errors.achievementscertificate[index] &&
+                          errors.achievementscertificate[index].type &&
+                          touched.achievementscertificate &&
+                          touched.achievementscertificate[index] &&
+                          touched.achievementscertificate[index].type ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].type}
                           </p>
@@ -265,11 +260,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].provider &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].type ? (
+                          errors.achievementscertificate[index] &&
+                          errors.achievementscertificate[index].provider &&
+                          touched.achievementscertificate &&
+                          touched.achievementscertificate[index] &&
+                          touched.achievementscertificate[index].type ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].provider}
                           </p>
@@ -287,11 +282,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].date &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].date ? (
+                          errors.achievementscertificate[index] &&
+                          errors.achievementscertificate[index].date &&
+                          touched.achievementscertificate &&
+                          touched.achievementscertificate[index] &&
+                          touched.achievementscertificate[index].date ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].date}
                           </p>
@@ -309,11 +304,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].duration &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].duration ? (
+                          errors.achievementscertificate[index] &&
+                          errors.achievementscertificate[index].duration &&
+                          touched.achievementscertificate &&
+                          touched.achievementscertificate[index] &&
+                          touched.achievementscertificate[index].duration ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].duration}
                           </p>
@@ -331,11 +326,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].platform &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].platform ? (
+                          errors.achievementscertificate[index] &&
+                          errors.achievementscertificate[index].platform &&
+                          touched.achievementscertificate &&
+                          touched.achievementscertificate[index] &&
+                          touched.achievementscertificate[index].platform ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].platform}
                           </p>
@@ -353,12 +348,12 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].certificateURL &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index]
-                          .certificateURL ? (
+                          errors.achievementscertificate[index] &&
+                          errors.achievementscertificate[index].certificateURL &&
+                          touched.achievementscertificate &&
+                          touched.achievementscertificate[index] &&
+                          touched.achievementscertificate[index]
+                            .certificateURL ? (
                           <p className="text-danger">
                             {
                               errors.achievementscertificate[index]
@@ -370,7 +365,7 @@ function AchievementForm() {
                       <div>
                         <label>Skills/Knowledge Gained:</label>
                         <Field
-                        as="textarea"
+                          as="textarea"
                           name={`achievementscertificate[${index}].skills`}
                           value={achievement.skills}
                           autoComplete="off"
@@ -379,11 +374,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].skills &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].skills ? (
+                          errors.achievementscertificate[index] &&
+                          errors.achievementscertificate[index].skills &&
+                          touched.achievementscertificate &&
+                          touched.achievementscertificate[index] &&
+                          touched.achievementscertificate[index].skills ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].skills}
                           </p>
@@ -419,219 +414,219 @@ function AchievementForm() {
             <br />
             <FieldArray name="internships">
 
-              {({ push,remove}) => (
-                  <fieldset className="fieldset">
+              {({ push, remove }) => (
+                <fieldset className="fieldset">
                   <legend>
                     <u>Intership Details</u>
                   </legend>
-                  {values.internships.map((internship,index)=>(
+                  {values.internships.map((internship, index) => (
                     <div key={index}>
-                       
-                       <div>
-                    <label>{`Internship Title ${index + 1}:`}</label>
-                    <Field
-                      type="text"
-                      name={`internships[${index}].internshiptitle`}
-                      value={internship.internshiptitle}
-                      autoComplete="off"
-                      placeholder="Enter internship title"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.internships &&
-                        errors.internships[index] &&
-                        errors.internships[index].internshiptitle &&
-                        touched.internships &&
-                        touched.internships[index] &&
-                        touched.internships[index].internshiptitle ? (
+
+                      <div>
+                        <label>{`Internship Title ${index + 1}:`}</label>
+                        <Field
+                          type="text"
+                          name={`internships[${index}].internshiptitle`}
+                          value={internship.internshiptitle}
+                          autoComplete="off"
+                          placeholder="Enter internship title"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.internships &&
+                          errors.internships[index] &&
+                          errors.internships[index].internshiptitle &&
+                          touched.internships &&
+                          touched.internships[index] &&
+                          touched.internships[index].internshiptitle ? (
                           <p className="text-danger">
                             {errors.internships[index].internshiptitle}
                           </p>
                         ) : null}
-                  </div>
-                  <div>
-                    <label>Company/Organization:</label>
-                    <Field
-                      type="text"
-                      name={`internships[${index}].company`}
-                      value={internship.company}
-                      autoComplete="off"
-                      placeholder="Enter company or organization name"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.internships &&
-                        errors.internships[index] &&
-                        errors.internships[index].company &&
-                        touched.internships &&
-                        touched.internships[index] &&
-                        touched.internships[index].company ? (
+                      </div>
+                      <div>
+                        <label>Company/Organization:</label>
+                        <Field
+                          type="text"
+                          name={`internships[${index}].company`}
+                          value={internship.company}
+                          autoComplete="off"
+                          placeholder="Enter company or organization name"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.internships &&
+                          errors.internships[index] &&
+                          errors.internships[index].company &&
+                          touched.internships &&
+                          touched.internships[index] &&
+                          touched.internships[index].company ? (
                           <p className="text-danger">
                             {errors.internships[index].company}
                           </p>
                         ) : null}
-                  </div>
-                  <div>
-                    <label>Internship Duration:</label>
-                    <div>
-                      <label>Start Date</label>
-                      <Field
-                        type="date"
-                        name={`internships[${index}].startDate`}
-                        value={internship.startDate}
-                        autoComplete="off"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                      />
-                      {errors.internships &&
-                        errors.internships[index] &&
-                        errors.internships[index].startDate &&
-                        touched.internships &&
-                        touched.internships[index] &&
-                        touched.internships[index].startDate ? (
-                          <p className="text-danger">
-                            {errors.internships[index].startDate}
-                          </p>
-                        ) : null}
-                    </div>
-                    <div>
-                      <label>End Date</label>
-                      <Field
-                        type="date"
-                        name={`internships[${index}].endDate`}
-                        value={internship.endDate}
-                        autoComplete="off"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                      />
-                      {errors.internships &&
-                        errors.internships[index] &&
-                        errors.internships[index].endDate &&
-                        touched.internships &&
-                        touched.internships[index] &&
-                        touched.internships[index].endDate ? (
-                          <p className="text-danger">
-                            {errors.internships[index].endDate}
-                          </p>
-                        ) : null}
-                    </div>
-                  </div>
-                  <div>
-                    <label>Role/Responsibilities:</label>
-                    <Field
-                    as="textarea"
-                      name={`internships[${index}].responsibilities`}
-                      value={internship.responsibilities}
-                      autoComplete="off"
-                      placeholder="Describe responsibilities"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.internships &&
-                        errors.internships[index] &&
-                        errors.internships[index].responsibilities &&
-                        touched.internships &&
-                        touched.internships[index] &&
-                        touched.internships[index].responsibilities ? (
+                      </div>
+                      <div>
+                        <label>Internship Duration:</label>
+                        <div>
+                          <label>Start Date</label>
+                          <Field
+                            type="date"
+                            name={`internships[${index}].startDate`}
+                            value={internship.startDate}
+                            autoComplete="off"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                          />
+                          {errors.internships &&
+                            errors.internships[index] &&
+                            errors.internships[index].startDate &&
+                            touched.internships &&
+                            touched.internships[index] &&
+                            touched.internships[index].startDate ? (
+                            <p className="text-danger">
+                              {errors.internships[index].startDate}
+                            </p>
+                          ) : null}
+                        </div>
+                        <div>
+                          <label>End Date</label>
+                          <Field
+                            type="date"
+                            name={`internships[${index}].endDate`}
+                            value={internship.endDate}
+                            autoComplete="off"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                          />
+                          {errors.internships &&
+                            errors.internships[index] &&
+                            errors.internships[index].endDate &&
+                            touched.internships &&
+                            touched.internships[index] &&
+                            touched.internships[index].endDate ? (
+                            <p className="text-danger">
+                              {errors.internships[index].endDate}
+                            </p>
+                          ) : null}
+                        </div>
+                      </div>
+                      <div>
+                        <label>Role/Responsibilities:</label>
+                        <Field
+                          as="textarea"
+                          name={`internships[${index}].responsibilities`}
+                          value={internship.responsibilities}
+                          autoComplete="off"
+                          placeholder="Describe responsibilities"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.internships &&
+                          errors.internships[index] &&
+                          errors.internships[index].responsibilities &&
+                          touched.internships &&
+                          touched.internships[index] &&
+                          touched.internships[index].responsibilities ? (
                           <p className="text-danger">
                             {errors.internships[index].responsibilities}
                           </p>
                         ) : null}
-                  </div>
-                  <div>
-                    <label>Achievements:</label>
-                    <Field
-                    as="textarea"
-                      name={`internships[${index}].achievements`}
-                      value={internship.achievements}
-                      autoComplete="off"
-                      placeholder="List achievements during internship"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.internships &&
-                        errors.internships[index] &&
-                        errors.internships[index].achievements &&
-                        touched.internships &&
-                        touched.internships[index] &&
-                        touched.internships[index].achievements ? (
+                      </div>
+                      <div>
+                        <label>Achievements:</label>
+                        <Field
+                          as="textarea"
+                          name={`internships[${index}].achievements`}
+                          value={internship.achievements}
+                          autoComplete="off"
+                          placeholder="List achievements during internship"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.internships &&
+                          errors.internships[index] &&
+                          errors.internships[index].achievements &&
+                          touched.internships &&
+                          touched.internships[index] &&
+                          touched.internships[index].achievements ? (
                           <p className="text-danger">
                             {errors.internships[index].achievements}
                           </p>
                         ) : null}
-                  </div>
-                  <div>
-                    <label>Supervisor/Mentor:</label>
-                    <Field
-                      type="text"
-                      name={`internships[${index}].supervisor`}
-                      value={internship.supervisor}
-                      autoComplete="off"
-                      placeholder="Enter supervisor's name"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.internships &&
-                        errors.internships[index] &&
-                        errors.internships[index].supervisor &&
-                        touched.internships &&
-                        touched.internships[index] &&
-                        touched.internships[index].supervisor ? (
+                      </div>
+                      <div>
+                        <label>Supervisor/Mentor:</label>
+                        <Field
+                          type="text"
+                          name={`internships[${index}].supervisor`}
+                          value={internship.supervisor}
+                          autoComplete="off"
+                          placeholder="Enter supervisor's name"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.internships &&
+                          errors.internships[index] &&
+                          errors.internships[index].supervisor &&
+                          touched.internships &&
+                          touched.internships[index] &&
+                          touched.internships[index].supervisor ? (
                           <p className="text-danger">
                             {errors.internships[index].supervisor}
                           </p>
                         ) : null}
-                  </div>
-                  <div>
-                    <label>Feedback or Evaluation:</label>
-                    <Field
-                    as="textarea"
-                      name={`internships[${index}].feedback`}
-                      value={internship.feedback}
-                      autoComplete="off"
-                      placeholder="Provide feedback or evaluation"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.internships &&
-                        errors.internships[index] &&
-                        errors.internships[index].feedback &&
-                        touched.internships &&
-                        touched.internships[index] &&
-                        touched.internships[index].feedback ? (
+                      </div>
+                      <div>
+                        <label>Feedback or Evaluation:</label>
+                        <Field
+                          as="textarea"
+                          name={`internships[${index}].feedback`}
+                          value={internship.feedback}
+                          autoComplete="off"
+                          placeholder="Provide feedback or evaluation"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.internships &&
+                          errors.internships[index] &&
+                          errors.internships[index].feedback &&
+                          touched.internships &&
+                          touched.internships[index] &&
+                          touched.internships[index].feedback ? (
                           <p className="text-danger">
                             {errors.internships[index].feedback}
                           </p>
                         ) : null}
-                  </div>
-                  <div>
-                    <label>Certificate (required):</label>
-                    <Field
-                      type="file"
-                      name={`internships[${index}].certificate`}
-                      value={internship.certificate}
-                      autoComplete="off"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.internships &&
-                        errors.internships[index] &&
-                        errors.internships[index].certificate &&
-                        touched.internships &&
-                        touched.internships[index] &&
-                        touched.internships[index].certificate ? (
+                      </div>
+                      <div>
+                        <label>Certificate (required):</label>
+                        <Field
+                          type="file"
+                          name={`internships[${index}].certificate`}
+                          value={internship.certificate}
+                          autoComplete="off"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.internships &&
+                          errors.internships[index] &&
+                          errors.internships[index].certificate &&
+                          touched.internships &&
+                          touched.internships[index] &&
+                          touched.internships[index].certificate ? (
                           <p className="text-danger">
                             {errors.internships[index].certificate}
                           </p>
                         ) : null}
-                  </div>
-                      
+                      </div>
+
 
 
                       <button type="button" onClick={() => remove(index)}>
                         Remove
                       </button>
-                       </div>
+                    </div>
                   ))}
                   <button
                     type="button"
@@ -651,163 +646,161 @@ function AchievementForm() {
                   >
                     Add Internship
                   </button>
-                 
+
                 </fieldset>
 
               )}
-               </FieldArray>
-            
+            </FieldArray>
+
             <br />
-            <FieldArray name="exams"> 
-            {({ push, remove }) => (
-                  <fieldset className="fieldset">
+            <FieldArray name="exams">
+              {({ push, remove }) => (
+                <fieldset className="fieldset">
                   <legend>
                     <u>Entrance Exam Details</u>
                   </legend>
 
-                  {values.exams.map((exam,index)=>(
+                  {values.exams.map((exam, index) => (
                     <div key={index}>
 
-<div>
-                    <label>{`Exam Name  ${index + 1}:`}</label>
-                    <Field
-                      type="text"
-                      name={`exams[${index}].examName`}
-                      value={exam.examName}
-                      autoComplete="off"
-                      placeholder="Enter exam name"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                     {errors.exams &&
-                        errors.exams[index] &&
-                        errors.exams[index].examName &&
-                        touched.exams &&
-                        touched.exams[index] &&
-                        touched.exams[index].examName ? (
+                      <div>
+                        <label>{`Exam Name  ${index + 1}:`}</label>
+                        <Field
+                          type="text"
+                          name={`exams[${index}].examName`}
+                          value={exam.examName}
+                          autoComplete="off"
+                          placeholder="Enter exam name"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.exams &&
+                          errors.exams[index] &&
+                          errors.exams[index].examName &&
+                          touched.exams &&
+                          touched.exams[index] &&
+                          touched.exams[index].examName ? (
                           <p className="text-danger">
                             {errors.exams[index].examName}
                           </p>
                         ) : null}
-                  </div>
-                  <div>
-                    <label>Exam Date:</label>
-                    <Field
-                      type="date"
-                      name={`exams[${index}].examDate`}
-                      value={exam.examDate}
-                      autoComplete="off"
-                      placeholder="Enter exam date"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.exams &&
-                        errors.exams[index] &&
-                        errors.exams[index].examDate &&
-                        touched.exams &&
-                        touched.exams[index] &&
-                        touched.exams[index].examDate ? (
+                      </div>
+                      <div>
+                        <label>Exam Date:</label>
+                        <Field
+                          type="date"
+                          name={`exams[${index}].examDate`}
+                          value={exam.examDate}
+                          autoComplete="off"
+                          placeholder="Enter exam date"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.exams &&
+                          errors.exams[index] &&
+                          errors.exams[index].examDate &&
+                          touched.exams &&
+                          touched.exams[index] &&
+                          touched.exams[index].examDate ? (
                           <p className="text-danger">
                             {errors.exams[index].examDate}
                           </p>
                         ) : null}
-                  </div>
-                  <div>
-                    <label>Score:</label>
-                    <Field
-                      type="text"
-                      name={`exams[${index}].score`}
-                      value={exam.score}
-                      autoComplete="off"
-                      placeholder="Enter score obtained"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.exams &&
-                        errors.exams[index] &&
-                        errors.exams[index].score &&
-                        touched.exams &&
-                        touched.exams[index] &&
-                        touched.exams[index].score ? (
+                      </div>
+                      <div>
+                        <label>Score:</label>
+                        <Field
+                          type="text"
+                          name={`exams[${index}].score`}
+                          value={exam.score}
+                          autoComplete="off"
+                          placeholder="Enter score obtained"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.exams &&
+                          errors.exams[index] &&
+                          errors.exams[index].score &&
+                          touched.exams &&
+                          touched.exams[index] &&
+                          touched.exams[index].score ? (
                           <p className="text-danger">
                             {errors.exams[index].score}
                           </p>
                         ) : null}
-                  </div>
-                  <div>
-                    <label>Rank (required):</label>
-                    <Field
-                      type="text"
-                      name={`exams[${index}].rank`}
-                      value={exam.rank}
-                      autoComplete="off"
-                      placeholder="Enter rank"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.exams &&
-                        errors.exams[index] &&
-                        errors.exams[index].rank &&
-                        touched.exams &&
-                        touched.exams[index] &&
-                        touched.exams[index].rank ? (
+                      </div>
+                      <div>
+                        <label>Rank (required):</label>
+                        <Field
+                          type="text"
+                          name={`exams[${index}].rank`}
+                          value={exam.rank}
+                          autoComplete="off"
+                          placeholder="Enter rank"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.exams &&
+                          errors.exams[index] &&
+                          errors.exams[index].rank &&
+                          touched.exams &&
+                          touched.exams[index] &&
+                          touched.exams[index].rank ? (
                           <p className="text-danger">
                             {errors.exams[index].rank}
                           </p>
                         ) : null}
-                  </div>
-                  <div>
-                    <label>Percentile (required):</label>
-                    <Field
-                      type="text"
-                      name={`exams[${index}].percentile`}
-                      value={exam.percentile}
-                      autoComplete="off"
-                      placeholder="Enter percentiles"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.exams &&
-                        errors.exams[index] &&
-                        errors.exams[index].percentile &&
-                        touched.exams &&
-                        touched.exams[index] &&
-                        touched.exams[index].percentile ? (
+                      </div>
+                      <div>
+                        <label>Percentile (required):</label>
+                        <Field
+                          type="text"
+                          name={`exams[${index}].percentile`}
+                          value={exam.percentile}
+                          autoComplete="off"
+                          placeholder="Enter percentiles"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.exams &&
+                          errors.exams[index] &&
+                          errors.exams[index].percentile &&
+                          touched.exams &&
+                          touched.exams[index] &&
+                          touched.exams[index].percentile ? (
                           <p className="text-danger">
                             {errors.exams[index].percentile}
                           </p>
                         ) : null}
-                  </div>
+                      </div>
 
-<button type="button" onClick={() => remove(index)}>
+                      <button type="button" onClick={() => remove(index)}>
                         Remove
                       </button>
-                    </div> 
+                    </div>
                   ))}
-                    <button
+                  <button
                     type="button"
                     onClick={() =>
                       push({
                         examName: "",
                         examDate: "",
-                        score:"",
+                        score: "",
                         rank: "",
                         percentile: "",
-                        
+
                       })
                     }
                   >
                     Add Exams
                   </button>
-                
+
                 </fieldset>
 
-            )}
-            
+              )}
+
             </FieldArray>
 
-
-           
             <br />
             <button type="submit" disabled={isSubmitting}>Submit</button>
           </Form>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { BsPersonPlus,  BsFillAlarmFill, BsGrid1X2Fill} from "react-icons/bs";
+import { BsPersonPlus,  BsFillAlarmFill, BsGrid1X2Fill, BsBook} from "react-icons/bs";
 
 function Sidebar({ openSidebarToggle, toggleSidebar }) {
   return (
@@ -17,6 +17,11 @@ function Sidebar({ openSidebarToggle, toggleSidebar }) {
         <li className="sidebar-list-item">
           <Link to="/view-activity">
             <BsGrid1X2Fill className="icon" /> Dashboard
+          </Link>
+        </li>
+        <li className="sidebar-list-item">
+          <Link to="/add-educationaldetails">
+            <BsBook className="icon" /> Educational Details
           </Link>
         </li>
         <li className="sidebar-list-item">

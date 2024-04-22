@@ -4,6 +4,7 @@ import './App.css';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import ActivityView from './components/ActivityView';
+import EducationalDetailsForm from "./components/EducationalDetailsForm";
 import AchievementForm from './components/AchievementForm';
 import Curricular from './components/Curricular';
 import Project from './components/Project';
@@ -18,6 +19,11 @@ function App() {
           <Sidebar />
           <Header />
              <Routes>
+               {/* Route for EducationForm */}
+             <Route
+            path="/add-educationaldetails" 
+            element={<EducationalDetailsForm />}
+            />
             {/* Route for CurricularForm */}
             <Route
               path="/curricular"

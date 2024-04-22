@@ -20,6 +20,7 @@ function EducationalDetailsForm() {
     completedOrContinue: "",
     gapYears: "",
     mode: "",
+    result: "",
     pastQualifications: [
       {
         qualificationLevel: "",
@@ -44,9 +45,8 @@ function EducationalDetailsForm() {
 
   const validationSchema = Yup.object().shape({
     admissionYear: Yup.string()
-      .required("Admission Year is required")
-      .matches(/^[0-9]+$/, "Only numbers are allowed")
-      .required("Admission Year is required"),
+    .required("Admission Year is required")
+    .matches(/^[0-9]{4}$/, "Only numbers allowed and must eactly be four digits"),
 
     instituteState: Yup.string().required("Institute State is required"),
     instituteDistrict: Yup.string().required("Institute District is required"),
@@ -58,15 +58,20 @@ function EducationalDetailsForm() {
     collegeName: Yup.string().required("College Name is required"),
     courseName: Yup.string().required("Course Name is required"),
     cetMeritPercentageClatScore: Yup.string()
-      .required("CET/Merit Percentage/CLAT Score is required")
-      .matches(/^[0-9]+$/, "Only numbers are allowed"),
+      .required("Cet Merit Percentage/Clat Score is required")
+      .matches(
+        /^\d+(\.\d{1,7})?$/,
+        "Only numbers with up to seven decimal points allowed"
+      ),
     applicationId: Yup.string()
       .required(
         "Application Admission ID/CAP ID/CLAT Admit Card No is required"
       )
       .matches(/^[0-9]+$/, "Only numbers are allowed")
       .required("Admission Year is required"),
-    yearOfStudy: Yup.string().required("Year Of Study is required"),
+    yearOfStudy: Yup.string()
+      .required("Year Of Study is required"),
+  
     completedOrContinue: Yup.string().required(
       "Completed Or Pursuing is required"
     ),
@@ -74,6 +79,7 @@ function EducationalDetailsForm() {
       .required("Gap Years is required")
       .matches(/^[0-9]+$/, "Only numbers are allowed"),
     mode: Yup.string().required("Mode is required"),
+    result: Yup.string().required("Sem wise results are required"),
     pastQualifications: Yup.array().of(
       Yup.object().shape({
         qualificationLevel: Yup.string().required(
@@ -90,13 +96,21 @@ function EducationalDetailsForm() {
         boardUniversity: Yup.string().required("Board/University is required"),
         mode: Yup.string().required("Mode is required"),
         admissionYear: Yup.string()
-          .required("Admission Year is required")
-          .matches(/^[0-9]+$/, "Only numbers are allowed"),
-        passingYear: Yup.string().required("Passing Year is required"),
-        result: Yup.mixed().required("Result is required"),
-        percentage: Yup.string()
+        .required("Admission Year is required")
+        .matches(/^[0-9]+$/, "Only numbers are allowed")
+        .matches(/^\d{4}$/, "Admission Year must be exactly 4 digits"),
+          passingYear: Yup.string()
+          .required("Passing Year is required")
+          .matches(/^[0-9]+$/, "Only numbers are allowed")
+          .matches(/^\d{4}$/, "Passing Year must be exactly 4 digits"),
+        
+          result: Yup.mixed().required("Result is required"),
+
+        percentage: Yup.number()
+          .typeError("Only numbers are allowed")
           .required("Percentage is required")
-          .matches(/^[0-9]+$/, "Only numbers are allowed"),
+          .max(100, "Percentage should not exceed 100"),
+
         attempts: Yup.string()
           .required("Attempts is required")
           .matches(/^[0-9]+$/, "Only numbers are allowed"),
@@ -369,12 +383,12 @@ function EducationalDetailsForm() {
                   type="file"
                   name="result"
                   accept=".pdf,.jpg,.jpeg"
-                  onChange={handleChange}
+                  onChange={(event) => handleFileChange(event, setFieldValue)}
                   onBlur={handleBlur}
                 />
-                {errors.result && touched.result ? (
+                {errors.result && touched.result && (
                   <p className="text-danger">{errors.result}</p>
-                ) : null}
+                )}
               </div>
             </fieldset>
             <br />
@@ -484,14 +498,20 @@ function EducationalDetailsForm() {
                         <label>Course:</label>
                         <input
                           type="text"
-                          name={`pastQualifications[${index}].courseName`}
+                          name={`pastQualifications[${index}].course`}
                           value={qualification.course}
-                          onChange={(e) => handleChange(e, index)}
+                          onChange={handleChange}
                           onBlur={handleBlur}
                         />
-                        {errors.courseName && touched.courseName ? (
-                          <p className="text-danger">{errors.courseName}</p>
-                        ) : null}
+                        {/* Access errors for the specific field */}
+                        {errors.pastQualifications &&
+                          errors.pastQualifications[index] &&
+                          errors.pastQualifications[index].course && (
+                            // Correct way to access errors
+                            <p className="text-danger">
+                              {errors.pastQualifications[index].course}
+                            </p>
+                          )}
                       </div>
                       <div>
                         <label>Board/University:</label>
@@ -502,11 +522,15 @@ function EducationalDetailsForm() {
                           onChange={(e) => handleChange(e, index)}
                           onBlur={handleBlur}
                         />
-                        {errors.boardUniversity && touched.boardUniversity ? (
-                          <p className="text-danger">
-                            {errors.boardUniversity}
-                          </p>
-                        ) : null}
+                        {/* Access errors for the specific field */}
+                        {errors.pastQualifications &&
+                          errors.pastQualifications[index] &&
+                          errors.pastQualifications[index].boardUniversity && (
+                            // Correct way to access errors
+                            <p className="text-danger">
+                              {errors.pastQualifications[index].boardUniversity}
+                            </p>
+                          )}
                       </div>
                       <div>
                         <label>Mode (Regular/Distance):</label>
@@ -560,16 +584,15 @@ function EducationalDetailsForm() {
                           onChange={(e) => handleChange(e, index)}
                           onBlur={handleBlur}
                         />
+                        {/* Access errors for the specific field */}
                         {errors.pastQualifications &&
-                        errors.pastQualifications[index] &&
-                        errors.pastQualifications[index].passingYear &&
-                        touched.pastQualifications &&
-                        touched.pastQualifications[index] &&
-                        touched.pastQualifications[index].passingYear ? (
-                          <p className="text-danger">
-                            {errors.pastQualifications[index].passingYear}
-                          </p>
-                        ) : null}
+                          errors.pastQualifications[index] &&
+                          errors.pastQualifications[index].passingYear && (
+                            // Correct way to access errors
+                            <p className="text-danger">
+                              {errors.pastQualifications[index].passingYear}
+                            </p>
+                          )}
                       </div>
                       <div>
                         <label>Result:</label>
@@ -580,16 +603,15 @@ function EducationalDetailsForm() {
                           onChange={(e) => handleChange(e, index)}
                           onBlur={handleBlur}
                         />
+                        {/* Access errors for the specific field */}
                         {errors.pastQualifications &&
-                        errors.pastQualifications[index] &&
-                        errors.pastQualifications[index].result &&
-                        touched.pastQualifications &&
-                        touched.pastQualifications[index] &&
-                        touched.pastQualifications[index].result ? (
-                          <p className="text-danger">
-                            {errors.pastQualifications[index].result}
-                          </p>
-                        ) : null}
+                          errors.pastQualifications[index] &&
+                          errors.pastQualifications[index].result && (
+                            // Correct way to access errors
+                            <p className="text-danger">
+                              {errors.pastQualifications[index].result}
+                            </p>
+                          )}
                       </div>
                       <div>
                         <label>Percentage:</label>
@@ -600,16 +622,15 @@ function EducationalDetailsForm() {
                           onChange={(e) => handleChange(e, index)}
                           onBlur={handleBlur}
                         />
+                        {/* Access errors for the specific field */}
                         {errors.pastQualifications &&
-                        errors.pastQualifications[index] &&
-                        errors.pastQualifications[index].percentage &&
-                        touched.pastQualifications &&
-                        touched.pastQualifications[index] &&
-                        touched.pastQualifications[index].percentage ? (
-                          <p className="text-danger">
-                            {errors.pastQualifications[index].percentage}
-                          </p>
-                        ) : null}
+                          errors.pastQualifications[index] &&
+                          errors.pastQualifications[index].percentage && (
+                            // Correct way to access errors
+                            <p className="text-danger">
+                              {errors.pastQualifications[index].percentage}
+                            </p>
+                          )}
                       </div>
                       <div>
                         <label>Attempts:</label>
@@ -620,16 +641,15 @@ function EducationalDetailsForm() {
                           onChange={(e) => handleChange(e, index)}
                           onBlur={handleBlur}
                         />
+                        {/* Access errors for the specific field */}
                         {errors.pastQualifications &&
-                        errors.pastQualifications[index] &&
-                        errors.pastQualifications[index].attempts &&
-                        touched.pastQualifications &&
-                        touched.pastQualifications[index] &&
-                        touched.pastQualifications[index].attempts ? (
-                          <p className="text-danger">
-                            {errors.pastQualifications[index].attempts}
-                          </p>
-                        ) : null}
+                          errors.pastQualifications[index] &&
+                          errors.pastQualifications[index].attempts && (
+                            // Correct way to access errors
+                            <p className="text-danger">
+                              {errors.pastQualifications[index].attempts}
+                            </p>
+                          )}
                       </div>
                       <div>
                         <label>Upload Marksheet:</label>
@@ -640,16 +660,15 @@ function EducationalDetailsForm() {
                           onChange={(e) => handleChange(e, index)}
                           onBlur={handleBlur}
                         />
+                        {/* Access errors for the specific field */}
                         {errors.pastQualifications &&
-                        errors.pastQualifications[index] &&
-                        errors.pastQualifications[index].marksheet &&
-                        touched.pastQualifications &&
-                        touched.pastQualifications[index] &&
-                        touched.pastQualifications[index].marksheet ? (
-                          <p className="text-danger">
-                            {errors.pastQualifications[index].marksheet}
-                          </p>
-                        ) : null}
+                          errors.pastQualifications[index] &&
+                          errors.pastQualifications[index].marksheet && (
+                            // Correct way to access errors
+                            <p className="text-danger">
+                              {errors.pastQualifications[index].marksheet}
+                            </p>
+                          )}
                       </div>
                       <div>
                         <label>Was any Gap in this Qualification/Course?</label>
@@ -659,7 +678,7 @@ function EducationalDetailsForm() {
                         >
                           <input
                             type="radio"
-                            name={`pastQualifications[${index}].wasgap`}
+                            name={`pastQualifications[${index}].gap`}
                             value="Yes"
                             checked={qualification.gap === "Yes"}
                             onChange={(e) => handleChange(e, index)}
@@ -678,16 +697,15 @@ function EducationalDetailsForm() {
                           No
                         </label>
                       </div>
+                      {/* Access errors for the specific field */}
                       {errors.pastQualifications &&
-                      errors.pastQualifications[index] &&
-                      errors.pastQualifications[index].gap &&
-                      touched.pastQualifications &&
-                      touched.pastQualifications[index] &&
-                      touched.pastQualifications[index].gap ? (
-                        <p className="text-danger">
-                          {errors.pastQualifications[index].gap}
-                        </p>
-                      ) : null}
+                        errors.pastQualifications[index] &&
+                        errors.pastQualifications[index].gap && (
+                          // Correct way to access errors
+                          <p className="text-danger">
+                            {errors.pastQualifications[index].gap}
+                          </p>
+                        )}
                       <br />
                       <button
                         className="btn"
@@ -709,6 +727,7 @@ function EducationalDetailsForm() {
                 </fieldset>
               )}
             </FieldArray>
+            <br />
 
             {/* Submit Button */}
             <button type="submit" disabled={isSubmitting}>

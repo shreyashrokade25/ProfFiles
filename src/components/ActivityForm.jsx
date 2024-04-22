@@ -65,13 +65,13 @@ function ActivityForm() {
         .then(response => {
           console.log("Form data submitted successfully:", response.data);
 
-           setCourseName("");
-           setCourseDescription("");
-           setSchoolName("");
-         setStartDate("");
-         setEndDate("");
-           setDuration("");
-           setCertificate("");
+          setCourseName("");
+          setCourseDescription("");
+          setSchoolName("");
+          setStartDate("");
+          setEndDate("");
+          setDuration("");
+          setCertificate("");
         })
         .catch(error => {
           console.error("Error submitting form data:", error);
@@ -89,15 +89,15 @@ function ActivityForm() {
     // Validate required fields
     if (!courseName) {
       errors.courseName = "Course Name is required";
-    }else if (courseName.length > 20) {
+    } else if (courseName.length > 20) {
       errors.courseName = "Course Name should be up to 20 characters";
     }
     if (!courseDescription) {
       errors.courseDescription = "Course Description is required";
-    }else if (courseDescription.length > 30) {
+    } else if (courseDescription.length > 30) {
       errors.courseDescription = "Course Description should be up to 30 characters";
     }
-  
+
     if (!schoolName) {
       errors.schoolName = "School/Institution Name is required";
     } else if (schoolName.length > 40) {
@@ -193,8 +193,8 @@ function ActivityForm() {
             accept=".pdf,.jpg,.jpeg"
             onChange={handleChange}
           />
-        {errors.certificate && <div className="text-danger ">{errors.certificate}</div>}
-      </div>
+          {errors.certificate && <div className="text-danger ">{errors.certificate}</div>}
+        </div>
         <button type="submit">Save</button>
       </form>
     </div>

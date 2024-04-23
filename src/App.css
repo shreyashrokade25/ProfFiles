@@ -171,6 +171,7 @@ body {
 .form-container input[type="file"],
 .form-container input[type="url"],
 .form-container input[type="date"],
+.form-container input[type="email"],
 .form-container select,
 .form-container textarea {
   width: 100%;

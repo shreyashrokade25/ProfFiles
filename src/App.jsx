@@ -8,6 +8,7 @@ import EducationalDetailsForm from "./components/EducationalDetailsForm";
 import AchievementForm from './components/AchievementForm';
 import Curricular from './components/Curricular';
 import Project from './components/Project';
+import PersonalDetailsPage from "./components/PersonalDetailsPage";
 import { AchievementProvider } from './components/AchievementContext'; // Import the AchievementProvider
 
 function App() {
@@ -19,6 +20,11 @@ function App() {
           <Sidebar />
           <Header />
              <Routes>
+               {/* Route for PersonalDetailsForm */}
+             <Route
+            path="/add-PersonalDetailsPage" 
+            element={<PersonalDetailsPage />}
+            />
                {/* Route for EducationForm */}
              <Route
             path="/add-educationaldetails" 

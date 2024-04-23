@@ -15,19 +15,19 @@ function Sidebar({ openSidebarToggle, toggleSidebar }) {
 
       <ul className="sidebar-list">
         <li className="sidebar-list-item">
-          <Link to="/view-activity">
+          <Link to="/view-Profile">
             <BsGrid1X2Fill className="icon" /> Dashboard
           </Link>
         </li>
         <li className="sidebar-list-item">
-          <Link to="/add-educationaldetails">
+          <Link to="/add-EducationalDetails">
             <BsBook className="icon" /> Educational Details
           </Link>
         </li>
         <li className="sidebar-list-item">
           {/* Link to navigate to the Add Achievement page */}
 
-          <Link to="/add-achievements">
+          <Link to="/add-AchievementDetails">
             <BsPersonPlus className="icon" /> Achievements and Certifications
           </Link>
            {/* <Link to="/">

@@ -3,11 +3,11 @@ import "../components/styles.css";
 import { Formik, Form, FieldArray, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from 'react-router-dom';
-import { AchievementContext } from './AchievementContext';
+import { TempStorage } from './TempStorage';
 import Label from './Label';
 
 function AchievementForm() {
-  const {setAchievementData, setInternshipData, setExamData } = useContext(AchievementContext); // Use the context
+  const {setAchievementData, setInternshipData, setExamData } = useContext(TempStorage); // Use the context
   const navigate = useNavigate();
 
   const initialValues = {
@@ -139,7 +139,7 @@ function AchievementForm() {
   });
 
  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
-    console.log("Values Data", values);
+    console.log("Achievement/Certification Details: ", values);
     // console.log("Achievement Data", achievementData);
 
     try {
@@ -155,7 +155,7 @@ function AchievementForm() {
        setExamData(combinedData.exams); // Assuming you have setExamData in your context
        
        // Pass all combined data in the navigation state
-       navigate('/project', { state: { combinedData } });
+       navigate('/add-ProjectDetails', { state: { combinedData } });
        
     } catch (error) {
       console.error("Achievement submission failed", error);

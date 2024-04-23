@@ -1,11 +1,18 @@
-import React from "react";
-import { Formik, Form, FieldArray } from "formik";
+import React, { useContext } from "react";
+import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import "./styles.css";
+import { useNavigate } from 'react-router-dom';
+import { TempStorage } from './TempStorage';
 
 function EducationalDetailsForm() {
+
+  const { setCurrentCourseData, setPastQualificationData } = useContext(TempStorage)
+  const navigate = useNavigate();
+
   const initialValues = {
+
     admissionYear: "",
     instituteState: "",
     instituteDistrict: "",
@@ -21,6 +28,7 @@ function EducationalDetailsForm() {
     gapYears: "",
     mode: "",
     result: "",
+
     pastQualifications: [
       {
         qualificationLevel: "",
@@ -43,98 +51,100 @@ function EducationalDetailsForm() {
     ],
   };
 
+
   const validationSchema = Yup.object().shape({
-    admissionYear: Yup.string()
-    .required("Admission Year is required")
-    .matches(/^[0-9]{4}$/, "Only numbers allowed and must eactly be four digits"),
+    // admissionYear: Yup.string()
+    // .required("Admission Year is required")
+    // .matches(/^[0-9]{4}$/, "Only numbers allowed and must eactly be four digits"),
 
-    instituteState: Yup.string().required("Institute State is required"),
-    instituteDistrict: Yup.string().required("Institute District is required"),
-    instituteTaluka: Yup.string().required("Institute Taluka is required"),
-    qualificationLevel: Yup.string().required(
-      "Qualification Level is required"
-    ),
-    stream: Yup.string().required("Stream is required"),
-    collegeName: Yup.string().required("College Name is required"),
-    courseName: Yup.string().required("Course Name is required"),
-    cetMeritPercentageClatScore: Yup.string()
-      .required("Cet Merit Percentage/Clat Score is required")
-      .matches(
-        /^\d+(\.\d{1,7})?$/,
-        "Only numbers with up to seven decimal points allowed"
-      ),
-    applicationId: Yup.string()
-      .required(
-        "Application Admission ID/CAP ID/CLAT Admit Card No is required"
-      )
-      .matches(/^[0-9]+$/, "Only numbers are allowed")
-      .required("Admission Year is required"),
-    yearOfStudy: Yup.string()
-      .required("Year Of Study is required"),
-  
-    completedOrContinue: Yup.string().required(
-      "Completed Or Pursuing is required"
-    ),
-    gapYears: Yup.string()
-      .required("Gap Years is required")
-      .matches(/^[0-9]+$/, "Only numbers are allowed"),
-    mode: Yup.string().required("Mode is required"),
-    result: Yup.string().required("Sem wise results are required"),
-    pastQualifications: Yup.array().of(
-      Yup.object().shape({
-        qualificationLevel: Yup.string().required(
-          "Qualification Level is required"
-        ),
-        stream: Yup.string().required("Stream is required"),
-        instituteState: Yup.string().required("Institute State is required"),
-        instituteDistrict: Yup.string().required(
-          "Institute District is required"
-        ),
-        instituteTaluka: Yup.string().required("Institute Taluka is required"),
-        collegeName: Yup.string().required("College Name is required"),
-        course: Yup.string().required("Course is required"),
-        boardUniversity: Yup.string().required("Board/University is required"),
-        mode: Yup.string().required("Mode is required"),
-        admissionYear: Yup.string()
-        .required("Admission Year is required")
-        .matches(/^[0-9]+$/, "Only numbers are allowed")
-        .matches(/^\d{4}$/, "Admission Year must be exactly 4 digits"),
-          passingYear: Yup.string()
-          .required("Passing Year is required")
-          .matches(/^[0-9]+$/, "Only numbers are allowed")
-          .matches(/^\d{4}$/, "Passing Year must be exactly 4 digits"),
-        
-          result: Yup.mixed().required("Result is required"),
+    // instituteState: Yup.string().required("Institute State is required"),
+    // instituteDistrict: Yup.string().required("Institute District is required"),
+    // instituteTaluka: Yup.string().required("Institute Taluka is required"),
+    // qualificationLevel: Yup.string().required(
+    //   "Qualification Level is required"
+    // ),
+    // stream: Yup.string().required("Stream is required"),
+    // collegeName: Yup.string().required("College Name is required"),
+    // courseName: Yup.string().required("Course Name is required"),
+    // cetMeritPercentageClatScore: Yup.string()
+    //   .required("Cet Merit Percentage/Clat Score is required")
+    //   .matches(
+    //     /^\d+(\.\d{1,7})?$/,
+    //     "Only numbers with up to seven decimal points allowed"
+    //   ),
+    // applicationId: Yup.string()
+    //   .required(
+    //     "Application Admission ID/CAP ID/CLAT Admit Card No is required"
+    //   )
+    //   .matches(/^[0-9]+$/, "Only numbers are allowed")
+    //   .required("Admission Year is required"),
+    // yearOfStudy: Yup.string()
+    //   .required("Year Of Study is required"),
 
-        percentage: Yup.number()
-          .typeError("Only numbers are allowed")
-          .required("Percentage is required")
-          .max(100, "Percentage should not exceed 100"),
+    // completedOrContinue: Yup.string().required(
+    //   "Completed Or Pursuing is required"
+    // ),
+    // gapYears: Yup.string()
+    //   .required("Gap Years is required")
+    //   .matches(/^[0-9]+$/, "Only numbers are allowed"),
+    // mode: Yup.string().required("Mode is required"),
+    // result: Yup.string().required("Sem wise results are required"),
+    // pastQualifications: Yup.array().of(
+    //   Yup.object().shape({
+    //     qualificationLevel: Yup.string().required(
+    //       "Qualification Level is required"
+    //     ),
+    //     stream: Yup.string().required("Stream is required"),
+    //     instituteState: Yup.string().required("Institute State is required"),
+    //     instituteDistrict: Yup.string().required(
+    //       "Institute District is required"
+    //     ),
+    //     instituteTaluka: Yup.string().required("Institute Taluka is required"),
+    //     collegeName: Yup.string().required("College Name is required"),
+    //     course: Yup.string().required("Course is required"),
+    //     boardUniversity: Yup.string().required("Board/University is required"),
+    //     mode: Yup.string().required("Mode is required"),
+    //     admissionYear: Yup.string()
+    //     .required("Admission Year is required")
+    //     .matches(/^[0-9]+$/, "Only numbers are allowed")
+    //     .matches(/^\d{4}$/, "Admission Year must be exactly 4 digits"),
+    //       passingYear: Yup.string()
+    //       .required("Passing Year is required")
+    //       .matches(/^[0-9]+$/, "Only numbers are allowed")
+    //       .matches(/^\d{4}$/, "Passing Year must be exactly 4 digits"),
 
-        attempts: Yup.string()
-          .required("Attempts is required")
-          .matches(/^[0-9]+$/, "Only numbers are allowed"),
-        marksheet: Yup.mixed().required("Marksheet is required"),
-        gap: Yup.string().required("Gap is required"),
-      })
-    ),
+    //       result: Yup.mixed().required("Result is required"),
+
+    //     percentage: Yup.number()
+    //       .typeError("Only numbers are allowed")
+    //       .required("Percentage is required")
+    //       .max(100, "Percentage should not exceed 100"),
+
+    //     attempts: Yup.string()
+    //       .required("Attempts is required")
+    //       .matches(/^[0-9]+$/, "Only numbers are allowed"),
+    //     marksheet: Yup.mixed().required("Marksheet is required"),
+    //     gap: Yup.string().required("Gap is required"),
+    //   })
+    // ),
   });
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    console.log("handleSubmit function triggered");
-    console.log("Form values:", values);
-    axios
-      .post("/api/formdata", values)
-      .then((response) => {
-        console.log("Form data submitted successfully:", response.data);
-        resetForm();
-      })
-      .catch((error) => {
-        console.error("Error submitting form data:", error);
-      })
-      .finally(() => {
-        setSubmitting(false);
-      });
+    try {
+      const combinedData = {
+        currentCourse: values,
+        pastQualifications: values.pastQualifications,
+      };
+
+      // Update the context with all combined data
+      console.log("Education Details:", values);
+      setCurrentCourseData(combinedData.currentCourse); // This is a simplified example. Adjust according to your actual data structure.
+      setPastQualificationData(combinedData.pastQualifications);
+      navigate('/add-CurricularDetails', { state: { combinedData } });
+    }
+    catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -158,239 +168,87 @@ function EducationalDetailsForm() {
               <legend>Current Course</legend>
               <div>
                 <label>Admission Year In Current Course:</label>
-                <input
-                  type="text"
-                  name="admissionYear"
-                  value={values.admissionYear}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.admissionYear && touched.admissionYear ? (
-                  <p className="text-danger">{errors.admissionYear}</p>
-                ) : null}
+                <Field type="text" name="admissionYear" className="input-field" />
+                <ErrorMessage name="admissionYear" component="div" className="text-danger" />
               </div>
               <div>
                 <label>Institute State:</label>
-                <input
-                  type="text"
-                  name="instituteState"
-                  value={values.instituteState}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.instituteState && touched.instituteState ? (
-                  <p className="text-danger">{errors.instituteState}</p>
-                ) : null}
+                <Field type="text" name="instituteState" className="input-field" />
+                <ErrorMessage name="instituteState" component="div" className="text-danger" />
               </div>
               <div>
                 <label>Institute District:</label>
-                <input
-                  type="text"
-                  name="instituteDistrict"
-                  value={values.instituteDistrict}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.instituteDistrict && touched.instituteDistrict ? (
-                  <p className="text-danger">{errors.instituteDistrict}</p>
-                ) : null}
+                <Field type="text" name="instituteDistrict" className="input-field" />
+                <ErrorMessage name="instituteDistrict" component="div" className="text-danger" />
               </div>
               <div>
                 <label>Institute Taluka:</label>
-                <input
-                  type="text"
-                  name="instituteTaluka"
-                  value={values.instituteTaluka}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.instituteTaluka && touched.instituteTaluka ? (
-                  <p className="text-danger">{errors.instituteTaluka}</p>
-                ) : null}
+                <Field type="text" name="instituteTaluka" className="input-field" />
+                <ErrorMessage name="instituteTaluka" component="div" className="text-danger" />
               </div>
               <div>
                 <label>Qualification Level:</label>
-                <input
-                  type="text"
-                  name="qualificationLevel"
-                  value={values.qualificationLevel}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.qualificationLevel && touched.qualificationLevel ? (
-                  <p className="text-danger">{errors.qualificationLevel}</p>
-                ) : null}
+                <Field type="text" name="qualificationLevel" className="input-field" />
+                <ErrorMessage name="qualificationLevel" component="div" className="text-danger" />
               </div>
               <div>
                 <label>Stream:</label>
-                <input
-                  type="text"
-                  name="stream"
-                  value={values.stream}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.stream && touched.stream ? (
-                  <p className="text-danger">{errors.stream}</p>
-                ) : null}
+                <Field type="text" name="stream" className="input-field" />
+                <ErrorMessage name="stream" component="div" className="text-danger" />
               </div>
               <div>
                 <label>College Name / School Name:</label>
-                <input
-                  type="text"
-                  name="collegeName"
-                  value={values.collegeName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.collegeName && touched.collegeName ? (
-                  <p className="text-danger">{errors.collegeName}</p>
-                ) : null}
+                <Field type="text" name="collegeName" className="input-field" />
+                <ErrorMessage name="collegeName" component="div" className="text-danger" />
               </div>
               <div>
                 <label>Course Name:</label>
-                <input
-                  type="text"
-                  name="courseName"
-                  value={values.courseName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.courseName && touched.courseName ? (
-                  <p className="text-danger">{errors.courseName}</p>
-                ) : null}
+                <Field type="text" name="courseName" className="input-field" />
+                <ErrorMessage name="courseName" component="div" className="text-danger" />
               </div>
               <div>
                 <label>CET / Merit Percentage / CLAT Score:</label>
-                <input
-                  type="text"
-                  name="cetMeritPercentageClatScore"
-                  value={values.cetMeritPercentageClatScore}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.cetMeritPercentageClatScore &&
-                touched.cetMeritPercentageClatScore ? (
-                  <p className="text-danger">
-                    {errors.cetMeritPercentageClatScore}
-                  </p>
-                ) : null}
+                <Field type="text" name="cetMeritPercentageClatScore" className="input-field" />
+                <ErrorMessage name="cetMeritPercentageClatScore" component="div" className="text-danger" />
               </div>
               <div>
-                <label>
-                  Application Admission ID/CAP ID/CLAT Admit Card No:
-                </label>
-                <input
-                  type="text"
-                  name="applicationId"
-                  value={values.applicationId}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.applicationId && touched.applicationId ? (
-                  <p className="text-danger">{errors.applicationId}</p>
-                ) : null}
+                <label>Application Admission ID/CAP ID/CLAT Admit Card No:</label>
+                <Field type="text" name="applicationId" className="input-field" />
+                <ErrorMessage name="applicationId" component="div" className="text-danger" />
               </div>
               <div>
                 <label>Year Of Study:</label>
-                <input
-                  type="text"
-                  name="yearOfStudy"
-                  value={values.yearOfStudy}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.yearOfStudy && touched.yearOfStudy ? (
-                  <p className="text-danger">{errors.yearOfStudy}</p>
-                ) : null}
+                <Field type="text" name="yearOfStudy" className="input-field" />
+                <ErrorMessage name="yearOfStudy" component="div" className="text-danger" />
               </div>
               <div>
                 <label>Completed Or Pursuing:</label>
-                <br />
-                <div style={{ display: "flex" }}>
-                  <label style={{ marginRight: "10px", fontWeight: "normal" }}>
-                    <input
-                      type="radio"
-                      name="completedOrContinue"
-                      value="completed"
-                      checked={values.completedOrContinue === "completed"}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    Completed
-                  </label>
-                  <label style={{ fontWeight: "normal" }}>
-                    <input
-                      type="radio"
-                      name="completedOrContinue"
-                      value="pursuing"
-                      checked={values.completedOrContinue === "pursuing"}
-                      onChange={handleChange}
-                    />
-                    Pursuing
-                  </label>
-                </div>
-                {errors.completedOrContinue && touched.completedOrContinue ? (
-                  <p className="text-danger">{errors.completedOrContinue}</p>
-                ) : null}
-                <br />
+                <Field type="radio" as="select" name="completedOrContinue" className="input-field">
+                  <option value="completed">Completed</option>
+                  <option value="pursuing">Pursuing</option>
+                </Field>
+                <ErrorMessage name="completedOrContinue" component="div" className="text-danger" />
+              </div>
+              <div>
                 <label>Gap Years:</label>
-                <input
-                  type="text"
-                  name="gapYears"
-                  value={values.gapYears}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.gapYears && touched.gapYears ? (
-                  <p className="text-danger">{errors.gapYears}</p>
-                ) : null}
+                <Field type="text" name="gapYears" className="input-field" />
+                <ErrorMessage name="gapYears" component="div" className="text-danger" />
               </div>
               <div>
                 <label>Mode (Regular/Distance):</label>
-                <br />
-                <div style={{ display: "flex" }}>
-                  <label style={{ marginRight: "10px", fontWeight: "normal" }}>
-                    <input
-                      type="radio"
-                      name="mode"
-                      value="Regular"
-                      checked={values.mode === "Regular"}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    Regular
-                  </label>
-                  <label style={{ fontWeight: "normal" }}>
-                    <input
-                      type="radio"
-                      name="mode"
-                      value="Distance"
-                      checked={values.mode === "Distance"}
-                      onChange={handleChange}
-                    />
-                    Distance
-                  </label>
-                </div>
-                {errors.mode && touched.mode ? (
-                  <p className="text-danger">{errors.mode}</p>
-                ) : null}
+                <Field type="radio" as="select" name="mode" className="input-field">
+                  <option value="Regular">Regular</option>
+                  <option value="Distance">Distance</option>
+                </Field>
+                <ErrorMessage name="mode" component="div" className="text-danger" />
               </div>
-              <br />
               <div>
                 <label>Results (Sem wise with Image):</label>
-                <input
-                  type="file"
-                  name="result"
-                  accept=".pdf,.jpg,.jpeg"
-                  onChange={(event) => handleFileChange(event, setFieldValue)}
-                  onBlur={handleBlur}
-                />
-                {errors.result && touched.result && (
-                  <p className="text-danger">{errors.result}</p>
-                )}
+                <Field type="file" name="result" accept=".pdf,.jpg,.jpeg" className="input-field" />
+                <ErrorMessage name="result" component="div" className="text-danger" />
               </div>
             </fieldset>
+
             <br />
 
             <FieldArray name="pastQualifications">
@@ -418,7 +276,7 @@ function EducationalDetailsForm() {
                           onBlur={handleBlur}
                         />
                         {errors.qualificationLevel &&
-                        touched.qualificationLevel ? (
+                          touched.qualificationLevel ? (
                           <p className="text-danger">
                             {errors.qualificationLevel}
                           </p>
@@ -460,7 +318,7 @@ function EducationalDetailsForm() {
                           onBlur={handleBlur}
                         />
                         {errors.instituteDistrict &&
-                        touched.instituteDistrict ? (
+                          touched.instituteDistrict ? (
                           <p className="text-danger">
                             {errors.instituteDistrict}
                           </p>

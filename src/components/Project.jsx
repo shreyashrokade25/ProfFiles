@@ -4,10 +4,15 @@ import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import Label from './Label'; // Import the Label component
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AchievementContext } from './AchievementContext';
+import { TempStorage } from './TempStorage';
 
 function Project() {
-    const {clubData, eventData, communityServiceData, workshopData, achievementData, internshipData, examData, setProjectData } = useContext(AchievementContext);
+    const { personalDetails,
+        currentCourseData, pastQualificationData,
+        clubData, eventData, communityServiceData, workshopData,
+        achievementData, internshipData, examData,
+        setProjectData } = useContext(TempStorage);
+
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -32,50 +37,58 @@ function Project() {
     };
 
     const validationSchema = Yup.object().shape({
-        projects: Yup.array().of(
-            Yup.object().shape({
-                projectTitle: Yup.string()
-                    .required('Project title is required')
-                    .max(50, 'Project title must be 50 characters or less'),
-                projectDescription: Yup.string()
-                    .required('Project description is required')
-                    .max(250, 'Project description must be 250 characters or less'),
-                projectCategory: Yup.string().required('Project category is required'),
-                otherCategory: Yup.string().when('projectCategory', {
-                    is: 'other',
-                    then: (schema) => schema.required('Other category is required'),
-                    otherwise: (schema) => schema.notRequired(),
-                }),
-                githubRepoURL: Yup.string().url('Invalid URL format'),
-                technologiesUsed: Yup.string().required('Technologies used is required'),
-                otherTechnologies: Yup.string().when('technologiesUsed', {
-                    is: 'other',
-                    then: (schema) => schema.required('Other technologies is required'),
-                    otherwise: (schema) => schema.notRequired(),
-                }),
-                // startDate: Yup.date().required('Start date is required'),
-                // endDate: Yup.date().required('End date is required'),
-            })
-        ),
+        // projects: Yup.array().of(
+        //     Yup.object().shape({
+        //         projectTitle: Yup.string()
+        //             .required('Project title is required')
+        //             .max(50, 'Project title must be 50 characters or less'),
+        //         projectDescription: Yup.string()
+        //             .required('Project description is required')
+        //             .max(250, 'Project description must be 250 characters or less'),
+        //         projectCategory: Yup.string().required('Project category is required'),
+        //         otherCategory: Yup.string().when('projectCategory', {
+        //             is: 'other',
+        //             then: (schema) => schema.required('Other category is required'),
+        //             otherwise: (schema) => schema.notRequired(),
+        //         }),
+        //         githubRepoURL: Yup.string().url('Invalid URL format'),
+        //         technologiesUsed: Yup.string().required('Technologies used is required'),
+        //         otherTechnologies: Yup.string().when('technologiesUsed', {
+        //             is: 'other',
+        //             then: (schema) => schema.required('Other technologies is required'),
+        //             otherwise: (schema) => schema.notRequired(),
+        //         }),
+        // startDate: Yup.date().required('Start date is required'),
+        // endDate: Yup.date().required('End date is required'),
+        //     })
+        // ),
     });
 
     const handleSubmit = async (values, { setSubmitting, setErrors }) => {
-        // console.log("Form values:", values); 
-        // console.log("Achievement data:", achievementData); 
         try {
             // Combine achievementData and projectData
-            const combinedData = {        
-                clubs: clubData,
-                events: eventData,
-                communityServices: communityServiceData,
-                workshops: workshopData,
-                achievements: achievementData, internshipData, examData,
-                projects: values.projects };
+            const combinedData = {
+                personalDetails,
+                EducationDetails: {
+                    currentCoures: currentCourseData,
+                    pastQualification: pastQualificationData
+                },
+                Curricular: {
+                    clubs: clubData,
+                    events: eventData,
+                    communityServices: communityServiceData,
+                    workshops: workshopData,
+                },
+                achievements: {
+                    achievementData, internshipData, examData,
+                },
+                projects: values.projects
+            };
 
             console.log("Combined data:", combinedData);
             setProjectData(values.projects); // Save project data to context
             // Navigate to ActivityView with combinedData
-            navigate('/activityview', { state: { combinedData } });
+            navigate('/view-Profile', { state: { combinedData } });
         } catch (error) {
             console.error("Form submission failed", error);
             setSubmitting(false);
@@ -90,7 +103,7 @@ function Project() {
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
             >
-                {({ isSubmitting, values}) => (
+                {({ isSubmitting, values }) => (
                     <Form>
                         <FieldArray name="projects">
                             {({ remove, push }) => (
@@ -233,11 +246,11 @@ function Project() {
                                         ))}
                                         <button type="button" onClick={() => push({ projectTitle: '', projectDescription: '', projectCategory: 'software', otherCategory: '', githubRepoURL: '', technologiesUsed: 'programming_languages', otherTechnologies: '', startDate: '', endDate: '', teamMembers: '', projectGoals: '', challengesFaced: '', license: '', references: '' })}>Add Project</button>
                                     </fieldset>
-                                    </div>
+                                </div>
                             )}
                         </FieldArray>
                         <br />
-                            <button type="submit" disabled={isSubmitting}>Submit</button>
+                        <button type="submit" disabled={isSubmitting}>Submit</button>
                     </Form>
                 )}
             </Formik>

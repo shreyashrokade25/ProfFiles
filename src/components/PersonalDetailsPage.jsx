@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, {useContext, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { TempStorage } from './TempStorage';
+import { useNavigate } from 'react-router-dom';
 // import axios from "axios";
 
+
 const PersonalDetailsPage = () => {
+    const { setPersonalDetails } = useContext(TempStorage);
+    const navigate = useNavigate();
     const initialValues = {
         studentName: "",
         photoUpload: null,
@@ -38,38 +43,36 @@ const PersonalDetailsPage = () => {
 
     const validationSchema = Yup.object().shape({
         studentName: Yup.string().required("Student Name is required").max(40, "Student Name should be up to 40 characters"),
-        photoUpload: Yup.mixed().required("Photo upload is required"),
-        dob: Yup.string().required("Date of birth is required"),
-        gender: Yup.string().required("Gender is required"),
-        phoneNo: Yup.string().matches(/^[0-9]+$/, "Please enter a valid phone number").required("Phone Number is mandatory"),
-        phoneNo: Yup.string()
-            .required("Phone number is required")
-            .matches(/^\d{10}$/, "Phone number must be 10 digits"),
-        bloodGroup: Yup.string().required("Blood Group is required"),
-        email1: Yup.string().email("Invalid email format").required("Email is required"),
-        email2: Yup.string().email("Invalid email format").required("Email is required"),
-        tempAddress: Yup.string().required("Temporary Address is required"),
-        permAddress: Yup.string().required("Permanent Address is required"),
-        state: Yup.string().required("State is required"),
-        district: Yup.string().required("District is required"),
-        pincode: Yup.string().required("Pincode is required"),
-        nationality: Yup.string().required("Nationality is required"),
-        religion: Yup.string().required("Religion is required"),
-        casteCategory: Yup.string().required("Caste Category is required"),
-        fatherName: Yup.string().required("Father Name is required"),
-        fatherPhone: Yup.string()
-            .required("Phone number is required")
-            .matches(/^\d{10}$/, "Phone number must be 10 digits"),
-        fatherEmail: Yup.string().email("Invalid email format").required("Father Email is required"),
-        fatherOccupation: Yup.string().required("Father Occupation is required"),
-        motherName: Yup.string().required("Mother Name is required"),
-        motherPhone: Yup.string().required("Mother Phone is required"),
-        motherEmail: Yup.string().email("Invalid email format").required("Mother Email is required"),
-        motherOccupation: Yup.string().required("Mother Occupation is required"),
-        siblingName: Yup.string().required("Sibling Name is required"),
-        siblingPhone: Yup.string().required("Sibling Phone is required"),
-        siblingEmail: Yup.string().email("Invalid email format").required("Sibling Email is required"),
-        siblingOccupation: Yup.string().required("Sibling Occupation is required"),
+        // photoUpload: Yup.mixed().required("Photo upload is required"),
+        // dob: Yup.string().required("Date of birth is required"),
+        // gender: Yup.string().required("Gender is required"),
+        // phoneNo: Yup.string().matches(/^[0-9]+$/, "Please enter a valid phone number").required("Phone Number is mandatory")
+        // .matches(/^\d{10}$/, "Phone number must be 10 digits"),
+        // bloodGroup: Yup.string().required("Blood Group is required"),
+        // email1: Yup.string().email("Invalid email format").required("Email is required"),
+        // email2: Yup.string().email("Invalid email format").required("Email is required"),
+        // tempAddress: Yup.string().required("Temporary Address is required"),
+        // permAddress: Yup.string().required("Permanent Address is required"),
+        // state: Yup.string().required("State is required"),
+        // district: Yup.string().required("District is required"),
+        // pincode: Yup.string().required("Pincode is required"),
+        // nationality: Yup.string().required("Nationality is required"),
+        // religion: Yup.string().required("Religion is required"),
+        // casteCategory: Yup.string().required("Caste Category is required"),
+        // fatherName: Yup.string().required("Father Name is required"),
+        // fatherPhone: Yup.string()
+        //     .required("Phone number is required")
+        //     .matches(/^\d{10}$/, "Phone number must be 10 digits"),
+        // fatherEmail: Yup.string().email("Invalid email format").required("Father Email is required"),
+        // fatherOccupation: Yup.string().required("Father Occupation is required"),
+        // motherName: Yup.string().required("Mother Name is required"),
+        // motherPhone: Yup.string().required("Mother Phone is required"),
+        // motherEmail: Yup.string().email("Invalid email format").required("Mother Email is required"),
+        // motherOccupation: Yup.string().required("Mother Occupation is required"),
+        // siblingName: Yup.string().required("Sibling Name is required"),
+        // siblingPhone: Yup.string().required("Sibling Phone is required"),
+        // siblingEmail: Yup.string().email("Invalid email format").required("Sibling Email is required"),
+        // siblingOccupation: Yup.string().required("Sibling Occupation is required"),
     });
 
 
@@ -77,9 +80,10 @@ const PersonalDetailsPage = () => {
 
     const handleSubmit = (values, { setSubmitting, resetForm }) => {
         try {
-
-            console.log("Form data submitted successfully:", values);
+            console.log("Personal Details:", values);
+            setPersonalDetails(values); // This is a simplified example. Adjust according to your actual data structure.
             setUploadedPhoto(null);
+            navigate('/add-EducationalDetails');
         }
         catch (e) {
             console.log(e);

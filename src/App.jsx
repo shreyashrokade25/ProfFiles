@@ -3,13 +3,13 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import ActivityView from './components/ActivityView';
+import ViewProfile from './components/ViewProfile';
 import EducationalDetailsForm from "./components/EducationalDetailsForm";
 import AchievementForm from './components/AchievementForm';
 import Curricular from './components/Curricular';
 import Project from './components/Project';
 import PersonalDetailsPage from "./components/PersonalDetailsPage";
-import { AchievementProvider } from './components/AchievementContext'; // Import the AchievementProvider
+import { AchievementProvider } from './components/TempStorage'; // Import the AchievementProvider
 
 function App() {
 
@@ -22,33 +22,33 @@ function App() {
              <Routes>
                {/* Route for PersonalDetailsForm */}
              <Route
-            path="/add-PersonalDetailsPage" 
+            path="/add-PersonalDetails" 
             element={<PersonalDetailsPage />}
             />
                {/* Route for EducationForm */}
              <Route
-            path="/add-educationaldetails" 
+            path="/add-EducationalDetails" 
             element={<EducationalDetailsForm />}
             />
             {/* Route for CurricularForm */}
             <Route
-              path="/curricular"
+              path="/add-CurricularDetails"
               element={<Curricular />}
             />
             {/* Route for AchievementForm */}
             <Route
-              path="/add-achievements"
+              path="/add-AchievementDetails"
               element={<AchievementForm />}
             />
             {/* Route for Project */}
             <Route
-              path="/project"
+              path="/add-ProjectDetails"
               element={<Project />}
             />
             {/* Route for ActivityView */}
             <Route
-              path="/activityview"
-              element={<ActivityView />}
+              path="/view-Profile"
+              element={<ViewProfile />}
             />
           </Routes>
         </div>

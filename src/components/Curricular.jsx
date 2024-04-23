@@ -3,13 +3,13 @@ import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import Label from './Label'; // Import the Label component
 import { useNavigate } from 'react-router-dom';
-import { AchievementContext } from './AchievementContext';
+import { TempStorage } from './TempStorage';
 import axios from 'axios';
 
 
 function Curricular() {
 
-    const { setClubData, setEventData, setCommunityServiceData, setWorkshopData } = useContext(AchievementContext); // Use the context
+    const { setClubData, setEventData, setCommunityServiceData, setWorkshopData } = useContext(TempStorage); // Use the context
     const navigate = useNavigate();
 
     const initialValues = {
@@ -67,7 +67,7 @@ function Curricular() {
     });
 
     const handleSubmit = async (values, { setSubmitting, setErrors }) => {
-        console.log("Values Data", values);
+        console.log("Curricular Details:", values);
         try {
             const combinedData = {
                 clubs: values.clubs,
@@ -83,7 +83,7 @@ function Curricular() {
             setWorkshopData(combinedData.workshop);
 
             // Pass all combined data in the navigation state
-            navigate('/add-achievements', { state: { combinedData } });
+            navigate('/add-AchievementDetails', { state: { combinedData } });
 
         } catch (error) {
             console.error("Achievement submission failed", error);

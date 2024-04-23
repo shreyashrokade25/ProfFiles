@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 
-export const AchievementContext = createContext();
+export const TempStorage = createContext();
 
 export const AchievementProvider = ({ children }) => {
  // State for achievements and certificates
@@ -19,9 +19,18 @@ export const AchievementProvider = ({ children }) => {
  const [communityServiceData, setCommunityServiceData] = useState([]);
  // State for workshop
  const [workshopData, setWorkshopData] = useState([]);
+ // State for PersonalDetails
+ const [personalDetails, setPersonalDetails] = useState([]);
+ // State for CurrentCourse Details
+ const [currentCourseData, setCurrentCourseData] = useState([]);
+ // State for Past Qualification Details
+ const [pastQualificationData, setPastQualificationData] = useState([]);
 
  // Value provided to the context consumers
  const value = {
+    personalDetails, setPersonalDetails,
+    currentCourseData, setCurrentCourseData,
+    pastQualificationData, setPastQualificationData,
     achievementData,setAchievementData,
     internshipData,setInternshipData,
     examData,setExamData,
@@ -33,8 +42,8 @@ export const AchievementProvider = ({ children }) => {
  };
 
  return (
-    <AchievementContext.Provider value={value}>
+    <TempStorage.Provider value={value}>
       {children}
-    </AchievementContext.Provider>
+    </TempStorage.Provider>
  );
 };

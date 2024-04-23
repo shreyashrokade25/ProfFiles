@@ -8,25 +8,25 @@ function Header() {
       <nav className='navbar'>
         <ul className='navbar-list'>
           <li className='navbar-item'>
-            <Link to="/add-PersonalDetailsPage" className="navbar-link">
+            <Link to="/add-PersonalDetails" className="navbar-link">
               <BsActivity className="icon" /> Personal Details
             </Link>
           </li>
-          <Link to="/add-educationaldetails" className="button-link spacer">
+          <Link to="/add-EducationalDetails" className="button-link spacer">
             <BsActivity className="icon" /> Educational Details
           </Link>
           <li className='navbar-item'>
-            <Link to="/curricular" className="navbar-link">
+            <Link to="/add-CurricularDetails" className="navbar-link">
               <BsActivity className="icon" /> Curricular & Co-curricular Details
             </Link>
           </li>
           <li className='navbar-item'>
-            <Link to="/add-achievements" className="navbar-link">
+            <Link to="/add-AchievementDetails" className="navbar-link">
               <BsPersonPlus className="icon" /> Achievements and Certificatios
             </Link>
           </li>
           <li className='navbar-item'>
-            <Link to="/project" className="navbar-link">
+            <Link to="/add-ProjectDetails" className="navbar-link">
               <BsActivity className="icon" /> Project Details
             </Link>
           </li>

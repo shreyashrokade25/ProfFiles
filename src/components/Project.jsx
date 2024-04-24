@@ -109,8 +109,9 @@ function Project() {
                             {({ remove, push }) => (
                                 <div>
                                     <fieldset className="fieldset">
+                        
                                         <legend>
-                                            <u>Project Details</u>
+                                            <h3>Project Details</h3>
                                         </legend>
                                         {values.projects && values.projects.length > 0 && values.projects.map((project, index) => (
                                             <div key={index}>

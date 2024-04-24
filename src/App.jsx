@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes ,useLocation } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
@@ -11,6 +12,21 @@ import Project from './components/Project';
 import PersonalDetailsPage from "./components/PersonalDetailsPage";
 import { AchievementProvider } from './components/TempStorage'; // Import the AchievementProvider
 
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+      const body = document.querySelector('#root');
+
+      body.scrollIntoView({
+          behavior: 'smooth'
+      });
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
 
  return (
@@ -19,6 +35,8 @@ function App() {
         <div className='grid-container'>
           <Sidebar />
           <Header />
+          <ScrollToTop />
+
              <Routes>
                {/* Route for PersonalDetailsForm */}
              <Route

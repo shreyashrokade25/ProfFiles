@@ -8,7 +8,7 @@ function Sidebar({ openSidebarToggle, toggleSidebar }) {
       <div className="sidebar-title sidebar">
         <div className="sidebar-brand">
           < BsFillAlarmFill className="icon_header" />
-          Student Extra-curricular Activities
+          Student Activities
         </div>
         <span className="icon close_icon" onClick={toggleSidebar}></span>
       </div>

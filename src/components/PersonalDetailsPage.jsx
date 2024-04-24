@@ -1,4 +1,4 @@
-import React, {useContext, useState } from 'react';
+import React, {useContext, useState  } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { TempStorage } from './TempStorage';
@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const PersonalDetailsPage = () => {
     const { setPersonalDetails } = useContext(TempStorage);
     const navigate = useNavigate();
+  
     const initialValues = {
         studentName: "",
         photoUpload: null,
@@ -388,7 +389,7 @@ const PersonalDetailsPage = () => {
                             <ErrorMessage name="siblingOccupation" component="div" className="text-danger" />
                         </div>
 
-                        <button type="submit" className="submit-button">Submit</button>
+                        <button type="submit" className="submit-button">Save & Next</button>
                     </Form>
                 )}
             </Formik>

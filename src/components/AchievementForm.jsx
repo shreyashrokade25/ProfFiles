@@ -122,17 +122,21 @@ function AchievementForm() {
     //   examDate: Yup.date()
     //     .required("Exam Date is required")
     //     .max(new Date(), "Date must be in past."),
-    //   score: Yup.string()
-    //     .required("Score is required")
-    //     .matches(/^\d+$/, "Score only numbers are allowed"),
-    //   rank: Yup.string()
-    //     .required("Rank is required")
-    //     .matches(/^\d+$/, "Rank only numbers are allowed"),
-    //   percentile: Yup.string()
-    //     .required("Percentile is required")
-    //     .matches(/^\d+$/, "Percentage only numbers are allowed")
-    //     .min(0, "Percentage cannot be less than 0")
-    //     .max(100, "Percentage cannot be greater than 100"),
+    //   score: Yup.number()
+    //     .typeError('Score must be a number')
+    //.min(0, 'Score must be greater than or equal to 0')
+
+    //.required('Score is required'),
+    //   rank: Yup.number()
+    //     .typeError('Rank must be a number')
+   // .positive('Rank must be a positive number')
+    //.integer('Rank must be an integer')
+    //.required('Rank is required'),
+    //   percentile: Yup.number()
+    //     .typeError('Percentage must be a number')
+    //.min(0, 'Percentage must be greater than or equal to 0')
+    //.max(100, 'Percentage must be less than or equal to 100')
+    //.required('Percentage is required'),
     //   })
     // ),
 

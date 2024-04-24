@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { useLocation } from 'react-router-dom';
 import { TempStorage } from './TempStorage';
+import "../components/viewstyles.css";
+
 
 const ViewProfile = () => {
     const location = useLocation();
@@ -44,7 +46,7 @@ const ViewProfile = () => {
                 return <div>No Personal data submitted yet</div>;
             }
             return (
-                <div>
+                <div className="personal-details-container">
                     <h2>Personal Details</h2>
                     <p>Name: {personalDetailsData.studentName}</p>
                     <p>Date of Birth: {personalDetailsData.dob}</p>
@@ -61,7 +63,7 @@ const ViewProfile = () => {
             return <div>No Past Qualification data submitted yet</div>;
         }
         return (
-            <div>
+            <div className="education-details-container">
 
                 <div>
                     <h2>Current Course Details</h2>
@@ -73,7 +75,7 @@ const ViewProfile = () => {
                     <h2>Past Qualification Details</h2>
                     {pastQualification.map((qualification, index) => (
                         <div key={index}>
-                            <h3>Qualification {index + 1}</h3>
+                            <h3> <u>Qualification {index + 1}</u></h3>
                             <p>Qualification Level: {qualification.qualificationLevel}</p>
                             <p>Stream: {qualification.stream}</p>
                             {/* Add more fields as needed */}
@@ -90,11 +92,11 @@ const ViewProfile = () => {
             return <div>No Club/Committee data submitted yet</div>;
         }
         return (
-            <div>   
+            <div className="club-details-container">   
                 <h2>Club/Committee Details</h2>
                 {clubs.map((club, index) => (
                     <div key={index}>
-                        <h3>Field {index + 1}</h3>
+                        <h3><u>Field {index + 1}</u></h3>
                         <p>Club/Committee Name: {club.clubName}</p>
                         <p>Position Held: {club.positionHeld}</p>
                         {/* Add more fields as needed */}
@@ -109,14 +111,22 @@ const ViewProfile = () => {
             return <div>No Achievement data submitted yet</div>;
         }
         return (
-            <div>
+            
+            <div className="achievement-details-container">
                 <h2>Achievement/Certification Details</h2>
                 {achievements.map((achievement, index) => (
                     <div key={index}>
-                        <h3>Achievement {index + 1}</h3>
+                        <h3><u>Achievement {index + 1}</u></h3>
                         <p>Title: {achievement.title}</p>
                         <p>Description: {achievement.description}</p>
+                        <p>Achievement type: {achievement.type}</p>
+                        <p>Provider/Organization: {achievement.provider}</p>
+                        <p>Achievement date: {achievement.date}</p>
+                        <p>Duration: {achievement.duration}</p>
+                        <p>Platform: {achievement.platform}</p>
                         <p>Certificate URL: {achievement.certificateURL}</p>
+                        <p>Skills: {achievement.skills}</p>
+
                         {/* Add more fields as needed */}
                     </div>
                 ))}
@@ -129,13 +139,20 @@ const ViewProfile = () => {
             return <div>No Internship data submitted yet</div>;
         }
         return (
-            <div>
+            <div className="internship-details-container">
                 <h2>Internship Details</h2>
                 {internships.map((internship, index) => (
                     <div key={index}>
-                        <h3>Internship {index + 1}</h3>
+                        <h3><u>Internship {index + 1}</u></h3>
                         <p>Title: {internship.internshiptitle}</p>
                         <p>Company: {internship.company}</p>
+                        <p>Start date: {internship.startDate}</p>
+                        <p>End date: {internship.endDate}</p>
+                        <p>Responsibilities: {internship.responsibilities}</p>
+                        <p>Achievements: {internship.achievements}</p>
+                        <p>Supervisor :{internship.supervisor}</p>
+                        <p>Feedback :{internship.feedback}</p>
+                        <p>Certificate: {internship.certificate}</p>
                         {/* Add more fields as needed */}
                     </div>
                 ))}
@@ -148,11 +165,11 @@ const ViewProfile = () => {
             return <div>No Exam data submitted yet</div>;
         }
         return (
-            <div>
+            <div className="exam-details-container">
                 <h2>Exam Details</h2>
                 {exams.map((exam, index) => (
                     <div key={index}>
-                        <h3>Exam {index + 1}</h3>
+                        <h3><u>Exam {index + 1}</u></h3>
                         <p>Name: {exam.examName}</p>
                         <p>Date: {exam.examDate}</p>
                         <p>Score: {exam.score}</p>
@@ -170,11 +187,11 @@ const ViewProfile = () => {
             return <div>No Project data submitted yet</div>;
         }
         return (
-            <div>
+            <div className="project-details-container">
                 <h2>Project Details</h2>
                 {projects.map((project, index) => (
                     <div key={index}>
-                        <h3>Project {index + 1}</h3>
+                        <h3><u>Project {index + 1}</u></h3>
                         <p>Project Title: {project.projectTitle}</p>
                         {/* Add more fields as needed */}
                     </div>
@@ -185,7 +202,7 @@ const ViewProfile = () => {
 
     return (
         <div className="form-container">
-            <h2>Submitted Details</h2>
+            <h1><b>Profile Details</b></h1>
             {renderPersonalDetails()}
             {renderEducationDetails()}
             {renderClubDetails()}
@@ -193,7 +210,6 @@ const ViewProfile = () => {
             {renderInternshipDetails()}
             {renderExamDetails()}
             {renderProjectDetails()}
-
         </div>
     );
 };

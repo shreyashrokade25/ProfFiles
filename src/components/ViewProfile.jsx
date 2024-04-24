@@ -128,7 +128,11 @@ const ViewProfile = () => {
               <p>
                 Was any Gap in this Qualification/Course?: {qualification.gap}
               </p>
-);
+              </div>
+                ))}
+            </div>
+            </div>
+        );
     };
 
 
@@ -201,28 +205,7 @@ const ViewProfile = () => {
             </div>
         );
     };
-    const renderAchievementDetails = () => {
-        if (!achievements.length) {
-            return <div>No Achievement data submitted yet</div>;
-        }
-        return (
-            <div>
-                <h2>Achievement/Certification Details</h2>
-                {achievements.map((achievement, index) => (
-                    <div key={index}>
-                        <h3>Achievement {index + 1}</h3>
-                        <p>Title: {achievement.title}</p>
-                        <p>Description: {achievement.description}</p>
-                        <p>Certificate URL: {achievement.certificateURL}</p>
-                        {/* Add more fields as needed */}
-                    </div>
-                ))}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
+
 
   const renderClubDetails = () => {
     if (!clubs.length) {

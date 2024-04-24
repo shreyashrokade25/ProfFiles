@@ -128,8 +128,95 @@ const ViewProfile = () => {
               <p>
                 Was any Gap in this Qualification/Course?: {qualification.gap}
               </p>
+);
+    };
 
-              {/* All the fields added */}
+
+    const renderEventDetails = () => {
+        if (!events.length) {
+            return <div>No Event data submitted yet</div>;
+        }
+        return (
+            <div>
+                <h2>Event Details</h2>
+                {events.map((event, index) => (
+                    <div key={index}>
+                        <h3>Field {index + 1}</h3>
+                        <p>Event Name: {event.eventName}</p>
+                        <p>Event Type: {event.eventType}</p>
+                        <p>Other Event Type: {event.otherEventType}</p>
+                        <p>Participation Level: {event.participationLevel}</p>
+                        <p>Achievement: {event.achievement}</p>
+                        <p>Year Participated: {event.yearParticipated}</p>
+                        <p>Certificate: {event.certificate}</p>
+                        {/* Add more fields as needed */}
+                    </div>
+                ))}
+            </div>
+        );
+    };
+    
+    const renderCommunityServiceDetails = () => {
+        if (!communityServices.length) {
+            return <div>No Community Service data submitted yet</div>;
+        }
+        return (
+            <div>
+                <h2>Community Service Details</h2>
+                {communityServices.map((service, index) => (
+                    <div key={index}>
+                        <h3>Field {index + 1}</h3>
+                        <p>Activity Name: {service.activityName}</p>
+                        <p>Organization: {service.organization}</p>
+                        <p>Description: {service.description}</p>
+                        <p>Duration: {service.duration.from} to {service.duration.to}</p>
+                        <p>Impact: {service.impact}</p>
+                        <p>Documentation: {service.documentation}</p>
+                        {/* Add more fields as needed */}
+                    </div>
+                ))}
+            </div>
+        );
+    };
+    
+    const renderWorkshopDetails = () => {
+        if (!workshops.length) {
+            return <div>No Workshop data submitted yet</div>;
+        }
+        return (
+            <div>
+                <h2>Workshop Details</h2>
+                {workshops.map((workshop, index) => (
+                    <div key={index}>
+                        <h3>Field {index + 1}</h3>
+                        <p>Title: {workshop.title}</p>
+                        <p>Organizer: {workshop.organizer}</p>
+                        <p>Description: {workshop.description}</p>
+                        <p>Dates: {workshop.dates.from} to {workshop.dates.to}</p>
+                        <p>Skills: {workshop.skills}</p>
+                        <p>Documentation: {workshop.documentation}</p>
+                        {/* Add more fields as needed */}
+                    </div>
+                ))}
+            </div>
+        );
+    };
+    const renderAchievementDetails = () => {
+        if (!achievements.length) {
+            return <div>No Achievement data submitted yet</div>;
+        }
+        return (
+            <div>
+                <h2>Achievement/Certification Details</h2>
+                {achievements.map((achievement, index) => (
+                    <div key={index}>
+                        <h3>Achievement {index + 1}</h3>
+                        <p>Title: {achievement.title}</p>
+                        <p>Description: {achievement.description}</p>
+                        <p>Certificate URL: {achievement.certificateURL}</p>
+                        {/* Add more fields as needed */}
+                    </div>
+                ))}
             </div>
           ))}
         </div>

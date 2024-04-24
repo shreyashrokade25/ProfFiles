@@ -1,4 +1,5 @@
 import React from "react";
+import Logo from "../assets/ProfFiles Logo.png"
 import { Link } from "react-router-dom";
 import {
   BsPersonPlus,
@@ -13,14 +14,16 @@ import {
 
 function Sidebar({ openSidebarToggle, toggleSidebar }) {
   return (
-    <aside
-      id="sidebar"
-      className={openSidebarToggle ? "sidebar-responsive" : ""}
-    >
+    <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive" : ""}>
+      <Link to="/view-Profile">
+      <div className="sidebar-logo">
+      <img src={Logo} style={{ width: "200px" }} alt="logo" />
+      </div>
+      </Link>
       <div className="sidebar-title sidebar">
         <div className="sidebar-brand">
-          <BsFillAlarmFill className="icon_header" />
-          Student Extra-curricular Activities
+          < BsFillAlarmFill className="icon_header" />
+          Student Activities
         </div>
         <span className="icon close_icon" onClick={toggleSidebar}></span>
       </div>
@@ -33,34 +36,7 @@ function Sidebar({ openSidebarToggle, toggleSidebar }) {
         </li>
         <li className="sidebar-list-item">
           <Link to="/add-PersonalDetails">
-            <BsPersonPlus className="icon" /> Personal Details
-          </Link>
-        </li>
-        <li className="sidebar-list-item">
-          <Link to="/add-EducationalDetails">
-            <BsBook className="icon" /> Educational Details
-          </Link>
-        </li>
-        <li className="sidebar-list-item">
-          <Link to="/add-CurricularDetails">
-            <BsFillAwardFill className="icon" /> Curricular & Co-curricular
-            Details
-          </Link>
-        </li>
-        <li className="sidebar-list-item">
-          {/* Link to navigate to the Add Achievement page */}
-
-          <Link to="/add-AchievementDetails">
-            <BsTrophy className="icon" /> Achievements and Certifications
-          </Link>
-          {/* <Link to="/">
-             <BsPersonPlus className="icon" /> Activities */}
-
-          {/* </Link> */}
-        </li>
-        <li className="sidebar-list-item">
-          <Link to="/add-ProjectDetails">
-            <BsFileEarmarkText className="icon" /> Project Details
+            <BsBook className="icon" /> Edit Profile
           </Link>
         </li>
       </ul>

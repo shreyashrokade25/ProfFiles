@@ -1,11 +1,10 @@
-
 /* Form */
 .form-container {
   grid-area: main;
   padding: 30px;
 }
 
-.fieldset{
+.fieldset {
   padding: 20px;
   margin: auto;
   border: 1px solid #8f5a1d;
@@ -28,7 +27,6 @@
   margin-bottom: 20px;
   border: 1px solid #d39c9c;
   border-radius: 5px;
-  
 }
 
 .form-container textarea {
@@ -49,7 +47,7 @@
   background-color: #9fb2ce; /* Darker shade of blue on hover */
 }
 
-.fieldset button{
+.fieldset button {
   background-color: #993b0f; /* Dark shade of blue */
   color: white;
   padding: 10px 20px;
@@ -59,10 +57,10 @@
   cursor: pointer;
   transition: background-color 0.3s;
 }
-.fieldset button:hover{
+.fieldset button:hover {
   background-color: #b47348;
 }
-.error{
+.error {
   color: red;
 }
 /* Form Ends */
@@ -87,4 +85,25 @@
   border: 1px solid black;
   border-radius: 10px;
 }
+
+.legend {
+  text-decoration: underline;
+}
 /* Educational Details */
+
+.view-profile-container {
+  padding: 20px;
+  margin: auto;
+  border: 1px solid black;
+  border-radius: 1%;
+}
+
+h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: inherit;
+  background-color: #8a522d;
+  padding: 10px 10px;
+  color: white;
+}

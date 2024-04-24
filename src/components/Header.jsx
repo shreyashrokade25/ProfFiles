@@ -22,7 +22,7 @@ function Header() {
           </li>
           <li className='navbar-item'>
             <Link to="/add-AchievementDetails" className="navbar-link">
-              <BsPersonPlus className="icon" /> Achievements and Certificatios
+              <BsActivity className="icon" /> Achievements and Certificatios
             </Link>
           </li>
           <li className='navbar-item'>

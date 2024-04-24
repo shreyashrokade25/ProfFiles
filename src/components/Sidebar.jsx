@@ -1,7 +1,16 @@
 import React from "react";
 import Logo from "../assets/ProfFiles Logo.png"
 import { Link } from "react-router-dom";
-import { BsPersonPlus,  BsFillAlarmFill, BsGrid1X2Fill, BsBook} from "react-icons/bs";
+import {
+  BsPersonPlus,
+  BsFillAlarmFill,
+  BsGrid1X2Fill,
+  BsBook,
+  BsFillAwardFill,
+  BsAwardFill,
+  BsFileEarmarkText,
+  BsTrophy
+} from "react-icons/bs";
 
 function Sidebar({ openSidebarToggle, toggleSidebar }) {
   return (

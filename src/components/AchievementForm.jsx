@@ -2,12 +2,13 @@ import React, { useContext } from "react";
 import "../components/styles.css";
 import { Formik, Form, FieldArray, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from 'react-router-dom';
-import { TempStorage } from './TempStorage';
-import Label from './Label';
+import { useNavigate } from "react-router-dom";
+import { TempStorage } from "./TempStorage";
+import Label from "./Label";
 
 function AchievementForm() {
-  const {setAchievementData, setInternshipData, setExamData } = useContext(TempStorage); // Use the context
+  const { setAchievementData, setInternshipData, setExamData } =
+    useContext(TempStorage); // Use the context
   const navigate = useNavigate();
 
   const initialValues = {
@@ -37,16 +38,15 @@ function AchievementForm() {
         certificate: "",
       },
     ],
-    exams: [{
-
-      examName: "",
-      examDate: "",
-      score: "",
-      rank: "",
-      percentile: "",
-
-    },],
-
+    exams: [
+      {
+        examName: "",
+        examDate: "",
+        score: "",
+        rank: "",
+        percentile: "",
+      },
+    ],
   };
 
   const validationSchema = Yup.object().shape({
@@ -111,11 +111,8 @@ function AchievementForm() {
     //     certificate: Yup.mixed().required("Certificate is required"),
     //   })
     // ),
-
     // exams: Yup.array().of(
-
     //   Yup.object().shape({
-
     //     examName: Yup.string()
     //     .required("Exam Name is required")
     //     .min(2, "Exam Name must contain 2 character."),
@@ -139,10 +136,9 @@ function AchievementForm() {
     //.required('Percentage is required'),
     //   })
     // ),
-
   });
 
- const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     console.log("Achievement/Certification Details: ", values);
     // console.log("Achievement Data", achievementData);
 
@@ -151,22 +147,21 @@ function AchievementForm() {
         achievementsCertificates: values.achievementscertificate,
         internships: values.internships,
         exams: values.exams,
-       };
-       
-       // Update the context with all combined data
-       setAchievementData(combinedData.achievementsCertificates);
-       setInternshipData(combinedData.internships); // Assuming you have setInternshipData in your context
-       setExamData(combinedData.exams); // Assuming you have setExamData in your context
-       
-       // Pass all combined data in the navigation state
-       navigate('/add-ProjectDetails', { state: { combinedData } });
-       
+      };
+
+      // Update the context with all combined data
+      setAchievementData(combinedData.achievementsCertificates);
+      setInternshipData(combinedData.internships); // Assuming you have setInternshipData in your context
+      setExamData(combinedData.exams); // Assuming you have setExamData in your context
+
+      // Pass all combined data in the navigation state
+      navigate("/add-ProjectDetails", { state: { combinedData } });
     } catch (error) {
       console.error("Achievement submission failed", error);
       setSubmitting(false);
       setErrors({ submit: "Achievement submission failed" });
     }
- };
+  };
 
   return (
     <div className="form-container">
@@ -175,17 +170,24 @@ function AchievementForm() {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, values, errors, touched, handleBlur, handleChange }) => (
+        {({
+          isSubmitting,
+          values,
+          errors,
+          touched,
+          handleBlur,
+          handleChange,
+        }) => (
           <Form>
             <FieldArray name="achievementscertificate">
               {({ push, remove }) => (
                 <fieldset className="fieldset">
+                  <h3>Achievements and Certifications</h3>
                   <legend>
                     <u>Achievement/Certification Details</u>
                   </legend>
                   {values.achievementscertificate.map((achievement, index) => (
                     <div key={index}>
-
                       <div>
                         <label>{`Achievement Title ${index + 1}:`}</label>
                         <Field
@@ -198,11 +200,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                          errors.achievementscertificate[index] &&
-                          errors.achievementscertificate[index].title &&
-                          touched.achievementscertificate &&
-                          touched.achievementscertificate[index] &&
-                          touched.achievementscertificate[index].title ? (
+                        errors.achievementscertificate[index] &&
+                        errors.achievementscertificate[index].title &&
+                        touched.achievementscertificate &&
+                        touched.achievementscertificate[index] &&
+                        touched.achievementscertificate[index].title ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].title}
                           </p>
@@ -220,11 +222,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                          errors.achievementscertificate[index] &&
-                          errors.achievementscertificate[index].description &&
-                          touched.achievementscertificate &&
-                          touched.achievementscertificate[index] &&
-                          touched.achievementscertificate[index].description ? (
+                        errors.achievementscertificate[index] &&
+                        errors.achievementscertificate[index].description &&
+                        touched.achievementscertificate &&
+                        touched.achievementscertificate[index] &&
+                        touched.achievementscertificate[index].description ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].description}
                           </p>
@@ -242,11 +244,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                          errors.achievementscertificate[index] &&
-                          errors.achievementscertificate[index].type &&
-                          touched.achievementscertificate &&
-                          touched.achievementscertificate[index] &&
-                          touched.achievementscertificate[index].type ? (
+                        errors.achievementscertificate[index] &&
+                        errors.achievementscertificate[index].type &&
+                        touched.achievementscertificate &&
+                        touched.achievementscertificate[index] &&
+                        touched.achievementscertificate[index].type ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].type}
                           </p>
@@ -264,11 +266,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                          errors.achievementscertificate[index] &&
-                          errors.achievementscertificate[index].provider &&
-                          touched.achievementscertificate &&
-                          touched.achievementscertificate[index] &&
-                          touched.achievementscertificate[index].type ? (
+                        errors.achievementscertificate[index] &&
+                        errors.achievementscertificate[index].provider &&
+                        touched.achievementscertificate &&
+                        touched.achievementscertificate[index] &&
+                        touched.achievementscertificate[index].type ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].provider}
                           </p>
@@ -286,11 +288,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                          errors.achievementscertificate[index] &&
-                          errors.achievementscertificate[index].date &&
-                          touched.achievementscertificate &&
-                          touched.achievementscertificate[index] &&
-                          touched.achievementscertificate[index].date ? (
+                        errors.achievementscertificate[index] &&
+                        errors.achievementscertificate[index].date &&
+                        touched.achievementscertificate &&
+                        touched.achievementscertificate[index] &&
+                        touched.achievementscertificate[index].date ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].date}
                           </p>
@@ -308,11 +310,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                          errors.achievementscertificate[index] &&
-                          errors.achievementscertificate[index].duration &&
-                          touched.achievementscertificate &&
-                          touched.achievementscertificate[index] &&
-                          touched.achievementscertificate[index].duration ? (
+                        errors.achievementscertificate[index] &&
+                        errors.achievementscertificate[index].duration &&
+                        touched.achievementscertificate &&
+                        touched.achievementscertificate[index] &&
+                        touched.achievementscertificate[index].duration ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].duration}
                           </p>
@@ -330,11 +332,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                          errors.achievementscertificate[index] &&
-                          errors.achievementscertificate[index].platform &&
-                          touched.achievementscertificate &&
-                          touched.achievementscertificate[index] &&
-                          touched.achievementscertificate[index].platform ? (
+                        errors.achievementscertificate[index] &&
+                        errors.achievementscertificate[index].platform &&
+                        touched.achievementscertificate &&
+                        touched.achievementscertificate[index] &&
+                        touched.achievementscertificate[index].platform ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].platform}
                           </p>
@@ -352,12 +354,12 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                          errors.achievementscertificate[index] &&
-                          errors.achievementscertificate[index].certificateURL &&
-                          touched.achievementscertificate &&
-                          touched.achievementscertificate[index] &&
-                          touched.achievementscertificate[index]
-                            .certificateURL ? (
+                        errors.achievementscertificate[index] &&
+                        errors.achievementscertificate[index].certificateURL &&
+                        touched.achievementscertificate &&
+                        touched.achievementscertificate[index] &&
+                        touched.achievementscertificate[index]
+                          .certificateURL ? (
                           <p className="text-danger">
                             {
                               errors.achievementscertificate[index]
@@ -378,11 +380,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.achievementscertificate &&
-                          errors.achievementscertificate[index] &&
-                          errors.achievementscertificate[index].skills &&
-                          touched.achievementscertificate &&
-                          touched.achievementscertificate[index] &&
-                          touched.achievementscertificate[index].skills ? (
+                        errors.achievementscertificate[index] &&
+                        errors.achievementscertificate[index].skills &&
+                        touched.achievementscertificate &&
+                        touched.achievementscertificate[index] &&
+                        touched.achievementscertificate[index].skills ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].skills}
                           </p>
@@ -417,7 +419,6 @@ function AchievementForm() {
             </FieldArray>
             <br />
             <FieldArray name="internships">
-
               {({ push, remove }) => (
                 <fieldset className="fieldset">
                   <legend>
@@ -425,7 +426,6 @@ function AchievementForm() {
                   </legend>
                   {values.internships.map((internship, index) => (
                     <div key={index}>
-
                       <div>
                         <label>{`Internship Title ${index + 1}:`}</label>
                         <Field
@@ -438,11 +438,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.internships &&
-                          errors.internships[index] &&
-                          errors.internships[index].internshiptitle &&
-                          touched.internships &&
-                          touched.internships[index] &&
-                          touched.internships[index].internshiptitle ? (
+                        errors.internships[index] &&
+                        errors.internships[index].internshiptitle &&
+                        touched.internships &&
+                        touched.internships[index] &&
+                        touched.internships[index].internshiptitle ? (
                           <p className="text-danger">
                             {errors.internships[index].internshiptitle}
                           </p>
@@ -460,11 +460,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.internships &&
-                          errors.internships[index] &&
-                          errors.internships[index].company &&
-                          touched.internships &&
-                          touched.internships[index] &&
-                          touched.internships[index].company ? (
+                        errors.internships[index] &&
+                        errors.internships[index].company &&
+                        touched.internships &&
+                        touched.internships[index] &&
+                        touched.internships[index].company ? (
                           <p className="text-danger">
                             {errors.internships[index].company}
                           </p>
@@ -483,11 +483,11 @@ function AchievementForm() {
                             onBlur={handleBlur}
                           />
                           {errors.internships &&
-                            errors.internships[index] &&
-                            errors.internships[index].startDate &&
-                            touched.internships &&
-                            touched.internships[index] &&
-                            touched.internships[index].startDate ? (
+                          errors.internships[index] &&
+                          errors.internships[index].startDate &&
+                          touched.internships &&
+                          touched.internships[index] &&
+                          touched.internships[index].startDate ? (
                             <p className="text-danger">
                               {errors.internships[index].startDate}
                             </p>
@@ -504,11 +504,11 @@ function AchievementForm() {
                             onBlur={handleBlur}
                           />
                           {errors.internships &&
-                            errors.internships[index] &&
-                            errors.internships[index].endDate &&
-                            touched.internships &&
-                            touched.internships[index] &&
-                            touched.internships[index].endDate ? (
+                          errors.internships[index] &&
+                          errors.internships[index].endDate &&
+                          touched.internships &&
+                          touched.internships[index] &&
+                          touched.internships[index].endDate ? (
                             <p className="text-danger">
                               {errors.internships[index].endDate}
                             </p>
@@ -527,11 +527,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.internships &&
-                          errors.internships[index] &&
-                          errors.internships[index].responsibilities &&
-                          touched.internships &&
-                          touched.internships[index] &&
-                          touched.internships[index].responsibilities ? (
+                        errors.internships[index] &&
+                        errors.internships[index].responsibilities &&
+                        touched.internships &&
+                        touched.internships[index] &&
+                        touched.internships[index].responsibilities ? (
                           <p className="text-danger">
                             {errors.internships[index].responsibilities}
                           </p>
@@ -549,11 +549,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.internships &&
-                          errors.internships[index] &&
-                          errors.internships[index].achievements &&
-                          touched.internships &&
-                          touched.internships[index] &&
-                          touched.internships[index].achievements ? (
+                        errors.internships[index] &&
+                        errors.internships[index].achievements &&
+                        touched.internships &&
+                        touched.internships[index] &&
+                        touched.internships[index].achievements ? (
                           <p className="text-danger">
                             {errors.internships[index].achievements}
                           </p>
@@ -571,11 +571,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.internships &&
-                          errors.internships[index] &&
-                          errors.internships[index].supervisor &&
-                          touched.internships &&
-                          touched.internships[index] &&
-                          touched.internships[index].supervisor ? (
+                        errors.internships[index] &&
+                        errors.internships[index].supervisor &&
+                        touched.internships &&
+                        touched.internships[index] &&
+                        touched.internships[index].supervisor ? (
                           <p className="text-danger">
                             {errors.internships[index].supervisor}
                           </p>
@@ -593,11 +593,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.internships &&
-                          errors.internships[index] &&
-                          errors.internships[index].feedback &&
-                          touched.internships &&
-                          touched.internships[index] &&
-                          touched.internships[index].feedback ? (
+                        errors.internships[index] &&
+                        errors.internships[index].feedback &&
+                        touched.internships &&
+                        touched.internships[index] &&
+                        touched.internships[index].feedback ? (
                           <p className="text-danger">
                             {errors.internships[index].feedback}
                           </p>
@@ -614,18 +614,16 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.internships &&
-                          errors.internships[index] &&
-                          errors.internships[index].certificate &&
-                          touched.internships &&
-                          touched.internships[index] &&
-                          touched.internships[index].certificate ? (
+                        errors.internships[index] &&
+                        errors.internships[index].certificate &&
+                        touched.internships &&
+                        touched.internships[index] &&
+                        touched.internships[index].certificate ? (
                           <p className="text-danger">
                             {errors.internships[index].certificate}
                           </p>
                         ) : null}
                       </div>
-
-
 
                       <button type="button" onClick={() => remove(index)}>
                         Remove
@@ -650,9 +648,7 @@ function AchievementForm() {
                   >
                     Add Internship
                   </button>
-
                 </fieldset>
-
               )}
             </FieldArray>
 
@@ -666,7 +662,6 @@ function AchievementForm() {
 
                   {values.exams.map((exam, index) => (
                     <div key={index}>
-
                       <div>
                         <label>{`Exam Name  ${index + 1}:`}</label>
                         <Field
@@ -679,11 +674,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.exams &&
-                          errors.exams[index] &&
-                          errors.exams[index].examName &&
-                          touched.exams &&
-                          touched.exams[index] &&
-                          touched.exams[index].examName ? (
+                        errors.exams[index] &&
+                        errors.exams[index].examName &&
+                        touched.exams &&
+                        touched.exams[index] &&
+                        touched.exams[index].examName ? (
                           <p className="text-danger">
                             {errors.exams[index].examName}
                           </p>
@@ -701,11 +696,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.exams &&
-                          errors.exams[index] &&
-                          errors.exams[index].examDate &&
-                          touched.exams &&
-                          touched.exams[index] &&
-                          touched.exams[index].examDate ? (
+                        errors.exams[index] &&
+                        errors.exams[index].examDate &&
+                        touched.exams &&
+                        touched.exams[index] &&
+                        touched.exams[index].examDate ? (
                           <p className="text-danger">
                             {errors.exams[index].examDate}
                           </p>
@@ -723,11 +718,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.exams &&
-                          errors.exams[index] &&
-                          errors.exams[index].score &&
-                          touched.exams &&
-                          touched.exams[index] &&
-                          touched.exams[index].score ? (
+                        errors.exams[index] &&
+                        errors.exams[index].score &&
+                        touched.exams &&
+                        touched.exams[index] &&
+                        touched.exams[index].score ? (
                           <p className="text-danger">
                             {errors.exams[index].score}
                           </p>
@@ -745,11 +740,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.exams &&
-                          errors.exams[index] &&
-                          errors.exams[index].rank &&
-                          touched.exams &&
-                          touched.exams[index] &&
-                          touched.exams[index].rank ? (
+                        errors.exams[index] &&
+                        errors.exams[index].rank &&
+                        touched.exams &&
+                        touched.exams[index] &&
+                        touched.exams[index].rank ? (
                           <p className="text-danger">
                             {errors.exams[index].rank}
                           </p>
@@ -767,11 +762,11 @@ function AchievementForm() {
                           onBlur={handleBlur}
                         />
                         {errors.exams &&
-                          errors.exams[index] &&
-                          errors.exams[index].percentile &&
-                          touched.exams &&
-                          touched.exams[index] &&
-                          touched.exams[index].percentile ? (
+                        errors.exams[index] &&
+                        errors.exams[index].percentile &&
+                        touched.exams &&
+                        touched.exams[index] &&
+                        touched.exams[index].percentile ? (
                           <p className="text-danger">
                             {errors.exams[index].percentile}
                           </p>
@@ -792,21 +787,19 @@ function AchievementForm() {
                         score: "",
                         rank: "",
                         percentile: "",
-
                       })
                     }
                   >
                     Add Exams
                   </button>
-
                 </fieldset>
-
               )}
-
             </FieldArray>
 
             <br />
-            <button type="submit" disabled={isSubmitting}>Submit</button>
+            <button type="submit" disabled={isSubmitting}>
+              Submit
+            </button>
           </Form>
         )}
       </Formik>

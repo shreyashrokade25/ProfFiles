@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import Label from './Label'; // Import the Label component
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TempStorage } from './TempStorage';
+import axios from 'axios';
 
 function Project() {
     const { personalDetails,
@@ -87,15 +88,20 @@ function Project() {
 
             console.log("Combined data:", combinedData);
             setProjectData(values.projects); // Save project data to context
-            // Navigate to ActivityView with combinedData
-            navigate('/view-Profile', { state: { combinedData } });
+            const response = await axios.post('http://localhost:3001/proffile/save-proffile', combinedData);
+
+            if (response.status === 200) {
+                // Navigate to ViewProfile with combinedData
+                navigate('/view-Profile', { state: { combinedData } });
+            } else {
+                throw new Error('Failed to save data');
+            }
         } catch (error) {
             console.error("Form submission failed", error);
             setSubmitting(false);
             setErrors({ submit: "Form submission failed" });
         }
     };
-
     return (
         <div className="form-container">
             <Formik
@@ -109,8 +115,9 @@ function Project() {
                             {({ remove, push }) => (
                                 <div>
                                     <fieldset className="fieldset">
+                        
                                         <legend>
-                                            <u>Project Details</u>
+                                            <h3>Project Details</h3>
                                         </legend>
                                         {values.projects && values.projects.length > 0 && values.projects.map((project, index) => (
                                             <div key={index}>

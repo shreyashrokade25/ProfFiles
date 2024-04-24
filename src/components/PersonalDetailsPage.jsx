@@ -5,7 +5,6 @@ import { TempStorage } from './TempStorage';
 import { useNavigate } from 'react-router-dom';
 // import axios from "axios";
 
-
 const PersonalDetailsPage = () => {
     const { setPersonalDetails } = useContext(TempStorage);
     const navigate = useNavigate();
@@ -391,10 +390,10 @@ const PersonalDetailsPage = () => {
 
                         <button type="submit" className="submit-button">Save & Next</button>
                     </Form>
-                )}
-            </Formik>
-        </div>
-    );
+        )}
+      </Formik>
+    </div>
+  );
 };
 
 export default PersonalDetailsPage;

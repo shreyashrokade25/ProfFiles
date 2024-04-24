@@ -107,6 +107,14 @@ body {
   -webkit-transition: all 0.5s;
 }
 
+.sidebar-logo {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 22px;
+  padding-top: 20px;
+  border-bottom: 2px dotted #8a522d;
+}
+
 .sidebar-title {
   display: flex;
   justify-content: space-between;
@@ -248,7 +256,7 @@ body {
   }
 
   .sidebar{
-    width: 100px;
+    width: 100%;
   }
 }
 

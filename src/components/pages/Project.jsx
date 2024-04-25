@@ -1,20 +1,24 @@
 import React, { useContext } from 'react';
-import "../components/styles.css";
+import "../styles/styles.css";
 import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import Label from './Label'; // Import the Label component
-import { useLocation, useNavigate } from 'react-router-dom';
-import { TempStorage } from './TempStorage';
+import Label from '../layout/Label'; // Import the Label component
+import { useNavigate } from 'react-router-dom';
+import { TempStorage } from '../TempStorage';
 import axios from 'axios';
 
 function Project() {
     const { personalDetails,
-        currentCourseData, pastQualificationData,
-        clubData, eventData, communityServiceData, workshopData,
-        achievementData, internshipData, examData,
+        currentCourseData,
+        pastQualificationData,
+        achievementData,
+        internshipData,
+        examData,
+        clubData,
+        eventData,
+        communityServiceData,
+        workshopData,
         setProjectData } = useContext(TempStorage);
-
-    const location = useLocation();
     const navigate = useNavigate();
 
     const initialValues = {
@@ -67,7 +71,7 @@ function Project() {
 
     const handleSubmit = async (values, { setSubmitting, setErrors }) => {
         try {
-            // Combine achievementData and projectData
+            // Combine all data along with projectData
             const combinedData = {
                 personalDetails,
                 EducationDetails: {
@@ -86,16 +90,10 @@ function Project() {
                 projects: values.projects
             };
 
-            console.log("Combined data:", combinedData);
-            setProjectData(values.projects); // Save project data to context
-            const response = await axios.post('http://localhost:3001/proffile/save-proffile', combinedData);
+            // console.log("Combined data:", combinedData);
+            setProjectData(values.projects);
+            navigate('/view-Profile', { state: { combinedData } });
 
-            if (response.status === 200) {
-                // Navigate to ViewProfile with combinedData
-                navigate('/view-Profile', { state: { combinedData } });
-            } else {
-                throw new Error('Failed to save data');
-            }
         } catch (error) {
             console.error("Form submission failed", error);
             setSubmitting(false);
@@ -115,7 +113,7 @@ function Project() {
                             {({ remove, push }) => (
                                 <div>
                                     <fieldset className="fieldset">
-                        
+
                                         <legend>
                                             <h3>Project Details</h3>
                                         </legend>
@@ -257,7 +255,9 @@ function Project() {
                             )}
                         </FieldArray>
                         <br />
-                        <button type="submit" disabled={isSubmitting}>Submit</button>
+                        <button type="submit" disabled={isSubmitting} className="submit-button">
+                            Save & Next
+                        </button>
                     </Form>
                 )}
             </Formik>

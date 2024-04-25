@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import "../components/styles.css";
+import "../styles/styles.css";
 import { Formik, Form, FieldArray, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { TempStorage } from "./TempStorage";
-import Label from "./Label";
+import { TempStorage } from "../TempStorage";
+import Label from "../layout/Label";
 
 function AchievementForm() {
   const { setAchievementData, setInternshipData, setExamData } =
@@ -797,8 +797,8 @@ function AchievementForm() {
             </FieldArray>
 
             <br />
-            <button type="submit" disabled={isSubmitting}>
-              Submit
+            <button type="submit" disabled={isSubmitting} className="submit-button">
+            Save & Next
             </button>
           </Form>
         )}

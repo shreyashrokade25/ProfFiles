@@ -311,6 +311,18 @@ const ViewProfile = () => {
                     <div key={index}>
                         <h3>Project {index + 1}</h3>
                         <p>Project Title: {project.projectTitle}</p>
+                        <p>Project Description: {project.projectDescription}</p>
+                        <p>Project Category: {project.projectCategory}</p>
+                        <p>GitHub Repository URL: {project.githubRepoURL}</p>
+                        <p>Technologies Used: {project.technologiesUsed}</p>
+                        <p>Start Date: {project.startDate}</p>
+                        <p>End Date: {project.endDate}</p>
+                        <p>Project Team: {project.teamMembers}</p>
+                        <p>Project Goals and Objectives: {project.projectGoals}</p>
+                        <p>Challenges Faced: {project.challengesFaced}</p>
+                        <p>License: {project.license}</p>
+                        <p>References or Citations: {project.references}</p>
+
                         {/* Add more fields as needed */}
                     </div>
                 ))}

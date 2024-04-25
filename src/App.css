@@ -113,7 +113,7 @@ body {
   justify-content: center;
   padding-bottom: 22px;
   padding-top: 20px;
-  border-bottom: 2px dotted #8a522d;
+  border-bottom: 3px solid rgb(241, 241, 241);
 }
 
 .sidebar-title {

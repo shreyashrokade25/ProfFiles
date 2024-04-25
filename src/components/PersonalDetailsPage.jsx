@@ -1,6 +1,7 @@
 import React, {useContext, useState  } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import Label from './Label';
 import { TempStorage } from './TempStorage';
 import { useNavigate } from 'react-router-dom';
 // import axios from "axios";
@@ -132,10 +133,13 @@ const PersonalDetailsPage = () => {
             >
                 {({ isSubmitting, setFieldValue, values }) => (
                     <Form>
-                        <h2 className="header">Personal Details</h2>
                         {/* Personal Details */}
+                        <fieldset className='fieldset'>
+                        <legend>
+                            <h3>Personal Details</h3>
+                        </legend>
                         <div className="form-row">
-                            <label htmlFor="studentName">Name of the Student:</label>
+                            <Label required={true} htmlFor="studentName">Name of the Student:</Label>
                             <Field type="text" id="studentName" name="studentName" autoComplete='off' className="input-field-small" />
                             <ErrorMessage name="studentName" component="div" className="text-danger" />
                         </div>
@@ -311,11 +315,15 @@ const PersonalDetailsPage = () => {
                             </Field>
                             <ErrorMessage name="casteCategory" component="div" className="text-danger" />
                         </div>
+                        </fieldset>
 
                         <br />
-
+                        
                         {/* Family Details */}
-                        <h3 className="header">Family Details</h3>
+                        <fieldset className='fieldset'>
+                        <legend>
+                            <h3>Family Details</h3>
+                        </legend>
                         <div className="form-row">
                             <label htmlFor="fatherName">Father Name:</label>
                             <Field type="text" id="fatherName" name="fatherName" autoComplete='off' className="input-field" />
@@ -387,6 +395,7 @@ const PersonalDetailsPage = () => {
                             <Field type="text" id="siblingOccupation" name="siblingOccupation" autoComplete='off' className="input-field" />
                             <ErrorMessage name="siblingOccupation" component="div" className="text-danger" />
                         </div>
+                        </fieldset> <br />
 
                         <button type="submit" className="submit-button">Save & Next</button>
                     </Form>

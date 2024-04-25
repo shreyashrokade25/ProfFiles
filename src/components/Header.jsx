@@ -12,9 +12,11 @@ function Header() {
               <BsActivity className="icon" /> Personal Details
             </Link>
           </li>
-          <Link to="/add-EducationalDetails" className="button-link spacer">
+          <li className='navbar-item'>
+          <Link to="/add-EducationalDetails" className="navbar-link">
             <BsActivity className="icon" /> Educational Details
           </Link>
+          </li>
           <li className='navbar-item'>
             <Link to="/add-CurricularDetails" className="navbar-link">
               <BsActivity className="icon" /> Curricular & Co-curricular Details

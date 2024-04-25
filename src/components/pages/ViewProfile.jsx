@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Formik, Form} from 'formik';
+import { Formik, Form } from 'formik';
 import { useLocation } from "react-router-dom";
 import { TempStorage } from "../TempStorage";
 import axios from 'axios';
@@ -43,7 +43,7 @@ const ViewProfile = () => {
     const projects = Array.isArray(projectData) ? projectData : [];
 
     const handleSubmit = async () => {
-        console.log("Student Data: ",combinedData);
+        console.log("Student Data: ", combinedData);
         try {
             const response = await axios.post('http://localhost:3001/proffile/save-proffile', combinedData);
 
@@ -85,7 +85,35 @@ const ViewProfile = () => {
                 <h2>Personal Details</h2>
                 <p>Name: {personalDetailsData.studentName}</p>
                 <p>Date of Birth: {personalDetailsData.dob}</p>
+                <p>Gender: {personalDetailsData.gender}</p>
+                <p>Phone Number: {personalDetailsData.phoneNo}</p>
+                <p>Blood Group: {personalDetailsData.bloodGroup}</p>
+                <p>Personal Email: {personalDetailsData.email1}</p>
+                <p>Official Email: {personalDetailsData.email2}</p>
+                <p>Permanent Address: {personalDetailsData.tempAddress}</p>
+                {/* Uncomment the line below if needed */}
+                {/* <p>Is Correspondence Address Same as Permanent Address: {personalDetailsData.sameAsTempAddress ? 'Yes' : 'No'}</p> */}
+                <p>Correspondence Address: {personalDetailsData.permAddress}</p>
+                <p>State: {personalDetailsData.state}</p>
+                <p>District: {personalDetailsData.district}</p>
+                <p>Pincode: {personalDetailsData.pincode}</p>
+                <p>Nationality: {personalDetailsData.nationality}</p>
+                <p>Religion: {personalDetailsData.religion}</p>
                 {/* Add more fields as needed */}
+
+                <h2>Family Details</h2>
+                <p>Father's Name: {personalDetailsData.fatherName}</p>
+                <p>Father Phone: {personalDetailsData.fatherPhone}</p>
+                <p>Father Email: {personalDetailsData.fatherEmail}</p>
+                <p>Father Occupation: {personalDetailsData.fatherOccupation}</p>
+                <p>Mother Name: {personalDetailsData.motherName}</p>
+                <p>Mother Phone: {personalDetailsData.motherPhone}</p>
+                <p>Mother Email: {personalDetailsData.motherEmail}</p>
+                <p>Mother Occupation: {personalDetailsData.motherOccupation}</p>
+                <p>Sibling Name: {personalDetailsData.siblingName}</p>
+                <p>Sibling Phone: {personalDetailsData.siblingPhone}</p>
+                <p>Sibling Email: {personalDetailsData.siblingEmail}</p>
+                <p>Sibling Occupation: {personalDetailsData.siblingOccupation}</p>
             </div>
         );
     };
@@ -362,8 +390,8 @@ const ViewProfile = () => {
             {renderInternshipDetails()}
             {renderExamDetails()}
             {renderProjectDetails()}
-        <br />
-        <button type="submit" onClick={handleSubmit}>Submit</button>
+            <br />
+            <button type="submit" onClick={handleSubmit}>Submit</button>
         </div>
     );
 };

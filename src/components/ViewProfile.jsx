@@ -7,6 +7,7 @@ const ViewProfile = () => {
     const location = useLocation();
     const {
         personalDetails,
+        familyDetails,
         currentCourseData,
         pastQualificationData,
         achievementData,
@@ -23,6 +24,8 @@ const ViewProfile = () => {
     // Ensure Data are arrays
     const personalDetailsData =
         personalDetails || location.state?.personalDetails || {};
+    const familyDetailsData =
+        familyDetails || location.state?.familyDetails || {};
     const currentCourse =
         currentCourseData || location.state?.currentCourseData || {};
     const pastQualification = Array.isArray(pastQualificationData)
@@ -41,6 +44,7 @@ const ViewProfile = () => {
 
     if (
         !personalDetailsData &&
+        !familyDetailsData &&
         !currentCourse &&
         !pastQualification.length &&
         !achievements.length &&
@@ -64,10 +68,43 @@ const ViewProfile = () => {
         }
         return (
             <div className="personal-details-container">
-                <h2>Personal Details</h2>
-                <p>Name: {personalDetailsData.studentName}</p>
-                <p>Date of Birth: {personalDetailsData.dob}</p>
-                {/* Add more fields as needed */}
+                <div>
+                    <h2>Personal Details</h2>
+                    <p>Name: {personalDetailsData.studentName}</p>
+                    {renderPhoto()}
+                    {/* <p>Photo Upload: {personalDetailsData.photoUpload}</p> */}
+                    <p>Date of Birth: {personalDetailsData.dob}</p>
+                    <p>Gender: {personalDetailsData.gender}</p>
+                    <p>Phone Number: {personalDetailsData.phoneNo}</p>
+                    <p>Blood Group: {personalDetailsData.bloodGroup}</p>
+                    <p>Personal Email: {personalDetailsData.email1}</p>
+                    <p>Official Email: {personalDetailsData.email2}</p>
+                    <p>Permanent Address: {personalDetailsData.tempAddress}</p>
+                    {/* <p>Is Correspondence Address Same as Permanent Address: {personalDetailsData.sameAsTempAddress ? 'Yes' : 'No'}</p> */}
+                    <p>Correspondence Address: {personalDetailsData.permAddress}</p>
+                    <p>State: {personalDetailsData.state}</p>
+                    <p>District: {personalDetailsData.district}</p>
+                    <p>Pincode: {personalDetailsData.pincode}</p>
+                    <p>Nationality: {personalDetailsData.nationality}</p>
+                    <p>Religion: {personalDetailsData.religion}</p>
+                    {/* Add other personal details fields */}
+                </div>
+                <div>
+                    <h2>Family Details</h2>
+                    <p>Father's Name: {personalDetailsData.fatherName}</p>
+                    <p>Father Phone: {personalDetailsData.fatherPhone}</p>
+                    <p>Father Email: {personalDetailsData.fatherEmail}</p>
+                    <p>Father Occupation: {personalDetailsData.fatherOccupation}</p>
+                    <p>Mother Name: {personalDetailsData.motherName}</p>
+                    <p>Mother Phone: {personalDetailsData.motherPhone}</p>
+                    <p>Mother Email: {personalDetailsData.motherEmail}</p>
+                    <p>Mother Occupation: {personalDetailsData.motherOccupation}</p>
+                    <p>Sibling Name: {personalDetailsData.siblingName}</p>
+                    <p>Sibling Phone: {personalDetailsData.siblingPhone}</p>
+                    <p>Sibling Email: {personalDetailsData.siblingEmail}</p>
+                    <p>Sibling Occupation: {personalDetailsData.siblingOccupation}</p>
+                    {/* Add other family details fields */}
+                </div>
             </div>
         );
     };

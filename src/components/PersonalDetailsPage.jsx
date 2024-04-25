@@ -26,7 +26,6 @@ const PersonalDetailsPage = () => {
         pincode: "",
         nationality: "",
         religion: "",
-        casteCategory: "",
         fatherName: "",
         fatherPhone: "",
         fatherEmail: "",
@@ -58,7 +57,6 @@ const PersonalDetailsPage = () => {
         // pincode: Yup.string().required("Pincode is required"),
         // nationality: Yup.string().required("Nationality is required"),
         // religion: Yup.string().required("Religion is required"),
-        // casteCategory: Yup.string().required("Caste Category is required"),
         // fatherName: Yup.string().required("Father Name is required"),
         // fatherPhone: Yup.string()
         //     .required("Phone number is required")
@@ -136,7 +134,7 @@ const PersonalDetailsPage = () => {
                         {/* Personal Details */}
                         <div className="form-row">
                             <label htmlFor="studentName">Name of the Student:</label>
-                            <Field type="text" id="studentName" name="studentName" autoComplete='off' className="input-field-small" />
+                            <Field type="text" id="studentName" name="studentName" placeholder="Enter Student's Name" autoComplete='off' className="input-field-small" />
                             <ErrorMessage name="studentName" component="div" className="text-danger" />
                         </div>
 
@@ -159,7 +157,7 @@ const PersonalDetailsPage = () => {
 
                         <div className="form-row">
                             <label htmlFor="dob">Date of Birth:</label>
-                            <Field type="date" id="dob" name="dob" autoComplete='off' className="input-field" />
+                            <Field type="date" id="dob" name="dob" placeholder="Enter Date of birth" autoComplete='off' className="input-field" />
                             <ErrorMessage name="dob" component="div" className="text-danger" />
                         </div>
 
@@ -183,13 +181,13 @@ const PersonalDetailsPage = () => {
 
                         <div className="form-row">
                             <label htmlFor="phoneNo">Phone Number:</label>
-                            <Field type="text" id="phoneNo" name="phoneNo" autoComplete='off' className="input-field" />
+                            <Field type="text" id="phoneNo" name="phoneNo" placeholder="Enter Phone Number" autoComplete='off' className="input-field" />
                             <ErrorMessage name="phoneNo" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="bloodGroup">Blood Group:</label>
-                            <Field as="select" id="bloodGroup" name="bloodGroup" className="input-field">
+                            <Field as="select" id="bloodGroup" name="bloodGroup" placeholder="Select Blood Group" className="input-field">
                                 <option value="">-Select Blood Group-</option>
                                 <option value="A+">A+</option>
                                 <option value="A-">A-</option>
@@ -205,19 +203,19 @@ const PersonalDetailsPage = () => {
 
                         <div className="form-row">
                             <label htmlFor="email1">Personal Email:</label>
-                            <Field type="email" id="email1" name="email1" autoComplete='off' className="input-field" />
+                            <Field type="email" id="email1" name="email1" placeholder="Enter Personal Email" autoComplete='off' className="input-field" />
                             <ErrorMessage name="email1" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="email2">Official Email:</label>
-                            <Field type="email" id="email2" name="email2" autoComplete='off' className="input-field" />
+                            <Field type="email" id="email2" name="email2" placeholder="Enter Official Email" autoComplete='off' className="input-field" />
                             <ErrorMessage name="email2" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="tempAddress">Permanent Address:</label>
-                            <Field type="text" id="tempAddress" name="tempAddress" autoComplete='off' className="input-field" />
+                            <Field type="text" id="tempAddress" name="tempAddress" placeholder="Enter Permanent Address" autoComplete='off' className="input-field" />
                             <ErrorMessage name="tempAddress" component="div" className="text-danger" />
                         </div>
 
@@ -233,13 +231,13 @@ const PersonalDetailsPage = () => {
 
                         <div className="form-row">
                             <label htmlFor="permAddress">Correspondence Address:</label>
-                            <Field type="text" id="permAddress" name="permAddress" autoComplete='off' className="input-field" />
+                            <Field type="text" id="permAddress" name="permAddress" placeholder="Enter Correspondence Address" autoComplete='off' className="input-field" />
                             <ErrorMessage name="permAddress" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="state">State:</label>
-                            <Field as="select" id="state" name="state" className="input-field">
+                            <Field as="select" id="state" name="state" placeholder="Select State" className="input-field">
                                 <option value="">Select State</option>
                                 <option value="Andhra Pradesh">Andhra Pradesh</option>
                                 <option value="Arunachal Pradesh">Arunachal Pradesh</option>
@@ -275,41 +273,26 @@ const PersonalDetailsPage = () => {
 
                         <div className="form-row">
                             <label htmlFor="district">District:</label>
-                            <Field type="text" id="district" name="district" autoComplete='off' className="input-field" />
+                            <Field type="text" id="district" name="district" placeholder="Enter District" autoComplete='off' className="input-field" />
                             <ErrorMessage name="district" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="pincode">Pincode:</label>
-                            <Field type="text" id="pincode" name="pincode" autoComplete='off' className="input-field" />
+                            <Field type="text" id="pincode" name="pincode" placeholder="Enter Pincode" autoComplete='off' className="input-field" />
                             <ErrorMessage name="pincode" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="nationality">Nationality:</label>
-                            <Field type="text" id="nationality" name="nationality" autoComplete='off' className="input-field" />
+                            <Field type="text" id="nationality" name="nationality" placeholder="Enter Nationality" autoComplete='off' className="input-field" />
                             <ErrorMessage name="nationality" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="religion">Religion:</label>
-                            <Field type="text" id="religion" name="religion" autoComplete='off' className="input-field" />
+                            <Field type="text" id="religion" name="religion" placeholder="Enter Religion" autoComplete='off' className="input-field" />
                             <ErrorMessage name="religion" component="div" className="text-danger" />
-                        </div>
-
-                        <div className="form-row">
-                            <label htmlFor="casteCategory">Caste Category:</label>
-                            <Field as="select" id="casteCategory" name="casteCategory" className="input-field">
-                                <option value="">--Select--</option>
-                                <option value="(OBC) Other Backward Class">(OBC) Other Backward Class</option>
-                                <option value="(SBC) Special Backward Class">(SBC) Special Backward Class</option>
-                                <option value="(SC) Scheduled Caste">(SC) Scheduled Caste</option>
-                                <option value="(ST) Scheduled Tribes">(ST) Scheduled Tribes</option>
-                                <option value="(VJNT) Vimukta Jat Nomadic Tribes">(VJNT) Vimukta Jat Nomadic Tribes</option>
-                                <option value="General">General</option>
-                                <option value="SEBC">SEBC</option>
-                            </Field>
-                            <ErrorMessage name="casteCategory" component="div" className="text-danger" />
                         </div>
 
                         <br />
@@ -318,19 +301,19 @@ const PersonalDetailsPage = () => {
                         <h3 className="header">Family Details</h3>
                         <div className="form-row">
                             <label htmlFor="fatherName">Father Name:</label>
-                            <Field type="text" id="fatherName" name="fatherName" autoComplete='off' className="input-field" />
+                            <Field type="text" id="fatherName" name="fatherName" placeholder="Enter Father's Name" autoComplete='off' className="input-field" />
                             <ErrorMessage name="fatherName" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="fatherPhone">Father Phone:</label>
-                            <Field type="text" id="fatherPhone" name="fatherPhone" autoComplete='off' className="input-field" />
+                            <Field type="text" id="fatherPhone" name="fatherPhone" placeholder="Enter Father's Phone" autoComplete='off' className="input-field" />
                             <ErrorMessage name="fatherPhone" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="fatherEmail">Father Email:</label>
-                            <Field type="email" id="fatherEmail" name="fatherEmail" autoComplete='off' className="input-field" />
+                            <Field type="email" id="fatherEmail" name="fatherEmail" placeholder="Enter Father's Email" autoComplete='off' className="input-field" />
                             <ErrorMessage name="fatherEmail" component="div" className="text-danger" />
                         </div>
 
@@ -342,49 +325,49 @@ const PersonalDetailsPage = () => {
 
                         <div className="form-row">
                             <label htmlFor="motherName">Mother Name:</label>
-                            <Field type="text" id="motherName" name="motherName" autoComplete='off' className="input-field" />
+                            <Field type="text" id="motherName" name="motherName" placeholder="Enter Mother's Name" autoComplete='off' className="input-field" />
                             <ErrorMessage name="motherName" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="motherPhone">Mother Phone:</label>
-                            <Field type="text" id="motherPhone" name="motherPhone" autoComplete='off' className="input-field" />
+                            <Field type="text" id="motherPhone" name="motherPhone" placeholder="Enter Mother's Phone" autoComplete='off' className="input-field" />
                             <ErrorMessage name="motherPhone" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="motherEmail">Mother Email:</label>
-                            <Field type="email" id="motherEmail" name="motherEmail" autoComplete='off' className="input-field" />
+                            <Field type="email" id="motherEmail" name="motherEmail" placeholder="Enter Mother's Email" autoComplete='off' className="input-field" />
                             <ErrorMessage name="motherEmail" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="motherOccupation">Mother Occupation:</label>
-                            <Field type="text" id="motherOccupation" name="motherOccupation" autoComplete='off' className="input-field" />
+                            <Field type="text" id="motherOccupation" name="motherOccupation" placeholder="Enter Mother's Occupation" autoComplete='off' className="input-field" />
                             <ErrorMessage name="motherOccupation" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="siblingName">Sibling Name:</label>
-                            <Field type="text" id="siblingName" name="siblingName" autoComplete='off' className="input-field" />
+                            <Field type="text" id="siblingName" name="siblingName" placeholder="Enter Sibling's Name" autoComplete='off' className="input-field" />
                             <ErrorMessage name="siblingName" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="siblingPhone">Sibling Phone:</label>
-                            <Field type="text" id="siblingPhone" name="siblingPhone" autoComplete='off' className="input-field" />
+                            <Field type="text" id="siblingPhone" name="siblingPhone" placeholder="Enter Sibling's Phone" autoComplete='off' className="input-field" />
                             <ErrorMessage name="siblingPhone" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="siblingEmail">Sibling Email:</label>
-                            <Field type="email" id="siblingEmail" name="siblingEmail" autoComplete='off' className="input-field" />
+                            <Field type="email" id="siblingEmail" name="siblingEmail" placeholder="Enter Sibling's Email" autoComplete='off' className="input-field" />
                             <ErrorMessage name="siblingEmail" component="div" className="text-danger" />
                         </div>
 
                         <div className="form-row">
                             <label htmlFor="siblingOccupation">Sibling Occupation:</label>
-                            <Field type="text" id="siblingOccupation" name="siblingOccupation" autoComplete='off' className="input-field" />
+                            <Field type="text" id="siblingOccupation" name="siblingOccupation" placeholder="Enter Sibling's Occupation" autoComplete='off' className="input-field" />
                             <ErrorMessage name="siblingOccupation" component="div" className="text-danger" />
                         </div>
 

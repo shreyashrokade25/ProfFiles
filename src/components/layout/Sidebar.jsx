@@ -15,11 +15,12 @@ import {
 function Sidebar({ openSidebarToggle, toggleSidebar }) {
   return (
     <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive" : ""}>
-      <Link to="/view-Profile">
       <div className="sidebar-logo">
-      <img src={Logo} style={{ width: "200px" }} alt="logo" />
-      </div>
+      <Link to="/view-Profile">
+      <img src={Logo} style={{ width: "200px", paddingBottom:"7px"}} alt="logo" />
       </Link>
+      <span>Manage Your ProfLife</span>
+      </div>
       <div className="sidebar-title sidebar">
         <div className="sidebar-brand">
           < BsFillAlarmFill className="icon_header" />

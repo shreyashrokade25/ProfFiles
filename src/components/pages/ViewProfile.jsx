@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
+import { Formik, Form} from 'formik';
 import { useLocation } from "react-router-dom";
-import { TempStorage } from "./TempStorage";
-import "../components/viewstyles.css";
+import { TempStorage } from "../TempStorage";
+import axios from 'axios';
+import "../styles/viewstyles.css";
 
 const ViewProfile = () => {
     const location = useLocation();
@@ -18,6 +20,7 @@ const ViewProfile = () => {
         workshopData,
         projectData,
     } = useContext(TempStorage);
+
     const combinedData = location.state?.combinedData || null;
 
     // Ensure Data are arrays
@@ -38,6 +41,21 @@ const ViewProfile = () => {
     const internships = Array.isArray(internshipData) ? internshipData : [];
     const exams = Array.isArray(examData) ? examData : [];
     const projects = Array.isArray(projectData) ? projectData : [];
+
+    const handleSubmit = async () => {
+        console.log("Student Data: ",combinedData);
+        try {
+            const response = await axios.post('http://localhost:3001/proffile/save-proffile', combinedData);
+
+            if (response.status === 200) {
+                console.log(response.data);
+            } else {
+                throw new Error('Failed to save data');
+            }
+        } catch (error) {
+            console.error("Form submission failed", error);
+        }
+    };
 
     if (
         !personalDetailsData &&
@@ -148,6 +166,7 @@ const ViewProfile = () => {
                         <h3>Field {index + 1}</h3>
                         <p>Club/Committee Name: {club.clubName}</p>
                         <p>Position Held: {club.positionHeld}</p>
+                        <p>Activities/Contributions: {club.activities}</p>
                         {/* Add more fields as needed */}
                     </div>
                 ))}
@@ -343,6 +362,8 @@ const ViewProfile = () => {
             {renderInternshipDetails()}
             {renderExamDetails()}
             {renderProjectDetails()}
+        <br />
+        <button type="submit" onClick={handleSubmit}>Submit</button>
         </div>
     );
 };

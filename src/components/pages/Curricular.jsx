@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import * as Yup from "yup";
-import Label from "./Label"; // Import the Label component
+import Label from "../layout/Label"; // Import the Label component
 import { useNavigate } from "react-router-dom";
-import { TempStorage } from "./TempStorage";
+import { TempStorage } from "../TempStorage";
+import "../styles/styles.css";
 import axios from "axios";
 
 function Curricular() {
@@ -595,9 +596,9 @@ function Curricular() {
               )}
             </FieldArray>
             <br />
-            <button type="submit" disabled={isSubmitting}>
-              Save
-            </button>
+            <button type="submit" disabled={isSubmitting} className="submit-button">
+            Save & Next
+            </button> 
           </Form>
         )}
       </Formik>

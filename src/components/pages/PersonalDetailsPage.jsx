@@ -1,8 +1,9 @@
 import React, {useContext, useState  } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import Label from './Label';
-import { TempStorage } from './TempStorage';
+import Label from '../layout/Label';
+import "../styles/styles.css";
+import { TempStorage } from '../TempStorage';
 import { useNavigate } from 'react-router-dom';
 // import axios from "axios";
 

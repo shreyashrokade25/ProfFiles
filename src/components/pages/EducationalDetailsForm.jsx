@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import "./styles.css";
+import "../styles/styles.css";
 import { useNavigate } from "react-router-dom";
-import { TempStorage } from "./TempStorage";
+import { TempStorage } from "../TempStorage";
 
 function EducationalDetailsForm() {
   const { setCurrentCourseData, setPastQualificationData } =
@@ -736,8 +736,8 @@ function EducationalDetailsForm() {
             <br />
 
             {/* Submit Button */}
-            <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Submitting" : "Save"}
+            <button type="submit" disabled={isSubmitting} className="submit-button">
+              {isSubmitting ? "Submitting" : "Save and Next"}
             </button>
           </Form>
         )}

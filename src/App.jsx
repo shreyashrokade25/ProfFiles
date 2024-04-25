@@ -2,14 +2,14 @@ import React from 'react';
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes ,useLocation } from 'react-router-dom';
 import './App.css';
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
-import ViewProfile from './components/ViewProfile';
-import EducationalDetailsForm from "./components/EducationalDetailsForm";
-import AchievementForm from './components/AchievementForm';
-import Curricular from './components/Curricular';
-import Project from './components/Project';
-import PersonalDetailsPage from "./components/PersonalDetailsPage";
+import Header from './components/layout/Header';
+import Sidebar from './components/layout/Sidebar';
+import ViewProfile from './components/pages/ViewProfile';
+import EducationalDetailsForm from "./components/pages/EducationalDetailsForm";
+import AchievementForm from './components/pages/AchievementForm';
+import Curricular from './components/pages/Curricular';
+import Project from './components/pages/Project';
+import PersonalDetailsPage from "./components/pages/PersonalDetailsPage";
 import { AchievementProvider } from './components/TempStorage'; // Import the AchievementProvider
 
 

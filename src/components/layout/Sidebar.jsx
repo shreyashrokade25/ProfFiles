@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../assets/ProfFiles Logo.png"
+import Logo from "../../assets/ProfFiles Logo.png"
 import { Link } from "react-router-dom";
 import {
   BsPersonPlus,

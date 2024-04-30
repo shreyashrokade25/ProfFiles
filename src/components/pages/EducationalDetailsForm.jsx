@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import "../styles/styles.css";
 import { useNavigate } from "react-router-dom";
 import { TempStorage } from "../TempStorage";
@@ -10,6 +9,8 @@ function EducationalDetailsForm() {
   const { setCurrentCourseData, setPastQualificationData } =
     useContext(TempStorage);
   const navigate = useNavigate();
+  const [CcResult, setCcResult] = useState(null);
+  const [marksheet, setMarksheet] = useState(null);
 
   const initialValues = {
     admissionYear: "",
@@ -26,7 +27,7 @@ function EducationalDetailsForm() {
     completedOrContinue: "",
     gapYears: "",
     mode: "",
-    result: "",
+    CcResult: null,
 
     pastQualifications: [
       {
@@ -44,7 +45,7 @@ function EducationalDetailsForm() {
         result: "",
         percentage: "",
         attempts: "",
-        marksheet: "",
+        marksheet: null,
         gap: "",
       },
     ],
@@ -124,15 +125,30 @@ function EducationalDetailsForm() {
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     try {
+      const updatedPastQualifications = values.pastQualifications.map((qualification, index) => {
+        // Check if there's a marksheet file for this qualification
+        if (values.pastQualifications[index].marksheet) {
+          const marksheetUrl = URL.createObjectURL(values.pastQualifications[index].marksheet);
+          return { ...qualification, marksheet: marksheetUrl };
+        }
+        // If there's no marksheet file, return the qualification object as is
+        return qualification;
+      });
+      
+      // Exclude pastQualifications field from spreading values
+      const { pastQualifications, ...currentCourse } = values;
+
       const combinedData = {
-        currentCourse: values,
-        pastQualifications: values.pastQualifications,
+        currentCourse: { ...currentCourse, photo: CcResult },
+        pastQualifications: updatedPastQualifications,
       };
 
       // Update the context with all combined data
       console.log("Education Details:", values);
       setCurrentCourseData(combinedData.currentCourse); // This is a simplified example. Adjust according to your actual data structure.
+      setCcResult(null);
       setPastQualificationData(combinedData.pastQualifications);
+      setMarksheet(null);
       navigate("/add-CurricularDetails", { state: { combinedData } });
     } catch (e) {
       console.log(e);
@@ -152,6 +168,7 @@ function EducationalDetailsForm() {
           handleBlur,
           values,
           handleChange,
+          setFieldValue,
           isSubmitting,
         }) => (
           <Form>
@@ -366,18 +383,20 @@ function EducationalDetailsForm() {
                 />
               </div>
               <div>
-                <label>Results (Sem wise with Image):</label>
-                <Field
+                <label htmlFor="CcResult">Current Course Result:</label>
+                <input
                   type="file"
-                  name="result"
-                  accept=".pdf,.jpg,.jpeg"
-                  className="input-field"
+                  id="CcResult"
+                  name="CcResult"
+                  onChange={(event) => {
+                    const CcResult = event.currentTarget.files[0];
+                    setCcResult(URL.createObjectURL(CcResult));
+                    setFieldValue("CcResult", CcResult);
+                  }}
+                  className="input-field-small"
                 />
-                <ErrorMessage
-                  name="result"
-                  component="div"
-                  className="text-danger"
-                />
+                <ErrorMessage name="CcResult" component="div" className="text-danger" />
+                {CcResult && <img src={CcResult} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '200px', marginLeft: '10px' }} />}
               </div>
             </fieldset>
 
@@ -659,21 +678,18 @@ function EducationalDetailsForm() {
                         <label>Upload Marksheet:</label>
                         <input
                           type="file"
-                          placeholder="Upload marksheet"
+                          id={`pastQualifications[${index}].marksheet`}
                           name={`pastQualifications[${index}].marksheet`}
                           accept=".jpg,.jpeg,.pdf"
-                          onChange={(e) => handleChange(e, index)}
-                          onBlur={handleBlur}
+                          onChange={(e) => {
+                            const marksheet = e.currentTarget.files[0];
+                            setFieldValue(`pastQualifications[${index}].marksheet`, marksheet);
+                          }}
+                          className="input-field-small"
                         />
-                        {/* Access errors for the specific field */}
-                        {errors.pastQualifications &&
-                          errors.pastQualifications[index] &&
-                          errors.pastQualifications[index].marksheet && (
-                            // Correct way to access errors
-                            <p className="text-danger">
-                              {errors.pastQualifications[index].marksheet}
-                            </p>
-                          )}
+
+                        <ErrorMessage name={`pastQualifications[${index}].marksheet`} component="div" className="text-danger" /> {/* Corrected */}
+                        {marksheet && <img src={marksheet} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '200px', marginLeft: '10px' }} />}
                       </div>
                       <div>
                         <label>Was any Gap in this Qualification/Course?</label>

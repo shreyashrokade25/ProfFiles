@@ -67,6 +67,22 @@
     margin-bottom: 10px;
     vertical-align: top;
   }
+
+  .form-container button[type="reset"]{
+    background-color: #1974a8;
+    color: white;
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .form-container button[type="reset"]:hover {
+    background-color: #9fb2ce;
+    /* Darker shade of blue on hover */
+  }
   
   /* Responsive adjustments */
   @media (max-width: 768px) {

@@ -1,11 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import "../styles/styles.css";
 import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import Label from '../layout/Label'; // Import the Label component
 import { useNavigate } from 'react-router-dom';
 import { TempStorage } from '../TempStorage';
-import axios from 'axios';
 
 function Project() {
     const { personalDetails,
@@ -20,6 +19,7 @@ function Project() {
         workshopData,
         setProjectData } = useContext(TempStorage);
     const navigate = useNavigate();
+    const [projectCertificate, setProjectCertificate] = useState(null);
 
     const initialValues = {
         projects: [
@@ -37,6 +37,7 @@ function Project() {
                 challengesFaced: '',
                 license: '',
                 references: '',
+                projectCertificate: null,
             }
         ]
     };
@@ -71,6 +72,14 @@ function Project() {
 
     const handleSubmit = async (values, { setSubmitting, setErrors }) => {
         try {
+            const updatedProject = values.projects.map((project, index) => {
+                if (values.projects[index].projectCertificate) {
+                    const projectCertificateUrl = URL.createObjectURL(values.projects[index].projectCertificate);
+                    return { ...project, projectCertificate: projectCertificateUrl };
+                }
+                return project;
+            });
+
             // Combine all data along with projectData
             const combinedData = {
                 personalDetails,
@@ -87,11 +96,12 @@ function Project() {
                 achievements: {
                     achievementData, internshipData, examData,
                 },
-                projects: values.projects
+                projects: updatedProject
             };
 
-            // console.log("Combined data:", combinedData);
-            setProjectData(values.projects);
+            console.log("Combined data:", combinedData);
+            setProjectData(combinedData.projects);
+            setProjectCertificate(null);
             navigate('/view-Profile', { state: { combinedData } });
 
         } catch (error) {
@@ -107,7 +117,7 @@ function Project() {
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
             >
-                {({ isSubmitting, values }) => (
+                {({ isSubmitting, setFieldValue, values }) => (
                     <Form>
                         <FieldArray name="projects">
                             {({ remove, push }) => (
@@ -246,10 +256,30 @@ function Project() {
                                                     />
                                                     <ErrorMessage name={`projects.${index}.references`} component="div" className="error" />
                                                 </div>
+
+                                                <div>
+                                                    <Label required={false}>Project Certificate (If any): </Label>
+                                                    <input
+                                                        type="file"
+                                                        id={`projects.[${index}].projectCertificate`}
+                                                        name={`projects.[${index}].projectCertificate`}
+                                                        accept=".jpg,.jpeg,.pdf"
+                                                        onChange={(e) => {
+                                                            const projectCertificate = e.currentTarget.files[0];
+                                                            setFieldValue(`projects.[${index}].projectCertificate`, projectCertificate);
+                                                        }}
+                                                        className="input-field-small"
+                                                    />
+
+                                                    <ErrorMessage name={`projects[${index}].projectCertificate`} component="div" className="text-danger" />
+                                                    {projectCertificate && <img src={projectCertificate} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '200px', marginLeft: '10px' }} />}
+                                                </div>
+
                                                 <button type="button" onClick={() => remove(index)}>Remove Project</button>
                                             </div>
+
                                         ))}
-                                        <button type="button" onClick={() => push({ projectTitle: '', projectDescription: '', projectCategory: 'software', otherCategory: '', githubRepoURL: '', technologiesUsed: 'programming_languages', otherTechnologies: '', startDate: '', endDate: '', teamMembers: '', projectGoals: '', challengesFaced: '', license: '', references: '' })}>Add Project</button>
+                                        <button type="button" onClick={() => push({ projectTitle: '', projectDescription: '', projectCategory: 'software', otherCategory: '', githubRepoURL: '', technologiesUsed: 'programming_languages', otherTechnologies: '', startDate: '', endDate: '', teamMembers: '', projectGoals: '', challengesFaced: '', license: '', references: '', projectCertificate: null })}>Add Project</button>
                                     </fieldset>
                                 </div>
                             )}

@@ -26,6 +26,21 @@ export const AchievementProvider = ({ children }) => {
  // State for Past Qualification Details
  const [pastQualificationData, setPastQualificationData] = useState([]);
 
+     // Function to reset all context data
+     const resetContextData = () => {
+      setAchievementData([]);
+      setProjectData([]);
+      setInternshipData([]);
+      setExamData([]);
+      setClubData([]);
+      setEventData([]);
+      setCommunityServiceData([]);
+      setWorkshopData([]);
+      setPersonalDetails([]);
+      setCurrentCourseData([]);
+      setPastQualificationData([]);
+  };
+
  // Value provided to the context consumers
  const value = {
     personalDetails, setPersonalDetails,
@@ -39,6 +54,7 @@ export const AchievementProvider = ({ children }) => {
     eventData,setEventData,
     communityServiceData,setCommunityServiceData,
     workshopData,setWorkshopData,
+    resetContextData,
  };
 
  return (

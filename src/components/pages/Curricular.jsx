@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import * as Yup from "yup";
 import Label from "../layout/Label"; // Import the Label component
 import { useNavigate } from "react-router-dom";
 import { TempStorage } from "../TempStorage";
 import "../styles/styles.css";
-import axios from "axios";
 
 function Curricular() {
   const {
@@ -16,8 +15,18 @@ function Curricular() {
   } = useContext(TempStorage); // Use the context
   const navigate = useNavigate();
 
+  const [eventCertificate, setEventCertificate] = useState(null);
+  const [csDocumentation, setCSDocumentation] = useState(null);
+  const [workshopDocumentation, setWorkshopDocumentation] = useState(null);
+
   const initialValues = {
-    clubs: [{ clubName: "", positionHeld: "", activities: "" }],
+    clubs: [
+      {
+        clubName: "",
+        positionHeld: "",
+        activities: ""
+      },
+    ],
     events: [
       {
         eventName: "",
@@ -26,7 +35,7 @@ function Curricular() {
         participationLevel: "",
         achievement: "",
         yearParticipated: "",
-        certificate: "",
+        eventCertificate: null,
       },
     ],
     communityService: [
@@ -36,7 +45,7 @@ function Curricular() {
         description: "",
         duration: { from: "", to: "" },
         impact: "",
-        documentation: "",
+        csDocumentation: null,
       },
     ],
     workshops: [
@@ -46,7 +55,7 @@ function Curricular() {
         description: "",
         dates: { from: "", to: "" },
         skills: "",
-        documentation: "",
+        workshopDocumentation: null,
       },
     ],
   };
@@ -99,20 +108,45 @@ function Curricular() {
   });
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
-    console.log("Curricular Details:", values);
     try {
+      const updatedEvents = values.events.map((event, index) => {
+        if (values.events[index].eventCertificate) {
+          const eventCertificateUrl = URL.createObjectURL(values.events[index].eventCertificate);
+          return { ...event, eventCertificate: eventCertificateUrl };
+        }
+        return event;
+      });
+      const updatedCommunityService = values.communityService.map((activity, index) => {
+        if (values.communityService[index].csDocumentation) {
+          const csDocumentationUrl = URL.createObjectURL(values.communityService[index].csDocumentation);
+          return { ...activity, csDocumentation: csDocumentationUrl };
+        }
+        return activity;
+      });
+      const updatedWorkshop = values.workshops.map((workshop, index) => {
+        if (values.workshops[index].workshopDocumentation) {
+          const workshopDocumentationUrl = URL.createObjectURL(values.workshops[index].workshopDocumentation);
+          return { ...workshop, workshopDocumentation: workshopDocumentationUrl };
+        }
+        return workshop;
+      });
+
       const combinedData = {
         clubs: values.clubs,
-        events: values.events,
-        communityService: values.communityService,
-        workshop: values.workshops,
+        events: updatedEvents,
+        communityService: updatedCommunityService,
+        workshop: updatedWorkshop,
       };
 
       // Update the context with all combined data
+      console.log("Curricular Details:", values);
       setClubData(combinedData.clubs);
       setEventData(combinedData.events);
+      setEventCertificate(null);
       setCommunityServiceData(combinedData.communityService);
+      setCSDocumentation(null);
       setWorkshopData(combinedData.workshop);
+      setWorkshopDocumentation(null);
 
       // Pass all combined data in the navigation state
       navigate("/add-AchievementDetails", { state: { combinedData } });
@@ -130,7 +164,7 @@ function Curricular() {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, values }) => (
+        {({ isSubmitting, setFieldValue, values }) => (
           <Form>
             <FieldArray name="clubs">
               {(arrayHelpers) => (
@@ -303,17 +337,24 @@ function Curricular() {
                         />
                       </div>
                       <div>
-                        <Label required={false}>Upload Certificate:</Label>
-                        <Field
+                        <Label required={false}>Upload Certificate: </Label>
+                        <input
                           type="file"
-                          name={`events.${index}.certificate`}
+                          id={`events.[${index}].eventCertificate`}
+                          name={`events.[${index}].eventCertificate`}
+                          accept=".jpg,.jpeg,.pdf"
+                          onChange={(e) => {
+                            const eventCertificate = e.currentTarget.files[0];
+                            setFieldValue(`events.[${index}].eventCertificate`, eventCertificate);
+                          }}
+                          className="input-field-small"
                         />
-                        <ErrorMessage
-                          name={`events.${index}.certificate`}
-                          component="div"
-                          className="error"
-                        />
+
+                        <ErrorMessage name={`pastQualifications[${index}].marksheet`} component="div" className="text-danger" />
+                        {eventCertificate &&
+                          <img src={eventCertificate} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '200px', marginLeft: '10px' }} />}
                       </div>
+
                       <button
                         type="button"
                         onClick={() => arrayHelpers.remove(index)}
@@ -332,7 +373,7 @@ function Curricular() {
                         participationLevel: "",
                         achievement: "",
                         yearParticipated: "",
-                        certificate: "",
+                        eventCertificate: null,
                       })
                     }
                   >
@@ -430,16 +471,21 @@ function Curricular() {
                         />
                       </div>
                       <div>
-                        <Label required={false}>Upload Documentation:</Label>
-                        <Field
+                        <Label required={false}>Upload Documentation: </Label>
+                        <input
                           type="file"
-                          name={`communityService.${index}.documentation`}
+                          id={`communityService.[${index}].csDocumentation`}
+                          name={`communityService.[${index}].csDocumentation`}
+                          accept=".jpg,.jpeg,.pdf"
+                          onChange={(e) => {
+                            const csDocumentation = e.currentTarget.files[0];
+                            setFieldValue(`communityService.[${index}].csDocumentation`, csDocumentation);
+                          }}
+                          className="input-field-small"
                         />
-                        <ErrorMessage
-                          name={`communityService.${index}.documentation`}
-                          component="div"
-                          className="error"
-                        />
+
+                        <ErrorMessage name={`pastQualifications[${index}].marksheet`} component="div" className="text-danger" /> {/* Corrected */}
+                        {csDocumentation && <img src={csDocumentation} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '200px', marginLeft: '10px' }} />}
                       </div>
                       <button
                         type="button"
@@ -460,7 +506,7 @@ function Curricular() {
                         endDate: "",
                         impact: "",
                         yearParticipated: "",
-                        documentation: "",
+                        csDocumentation: null,
                       })
                     }
                   >
@@ -558,16 +604,21 @@ function Curricular() {
                         />
                       </div>
                       <div>
-                        <Label required={false}>Upload Documentation:</Label>
-                        <Field
+                        <Label required={false}>Upload Documentation: </Label>
+                        <input
                           type="file"
-                          name={`workshops.${index}.documentation`}
+                          id={`workshops.[${index}].workshopDocumentation`}
+                          name={`workshops.[${index}].workshopDocumentation`}
+                          accept=".jpg,.jpeg,.pdf"
+                          onChange={(e) => {
+                            const workshopDocumentation = e.currentTarget.files[0];
+                            setFieldValue(`workshops.[${index}].workshopDocumentation`, workshopDocumentation);
+                          }}
+                          className="input-field-small"
                         />
-                        <ErrorMessage
-                          name={`workshops.${index}.documentation`}
-                          component="div"
-                          className="error"
-                        />
+
+                        <ErrorMessage name={`pastQualifications[${index}].marksheet`} component="div" className="text-danger" /> {/* Corrected */}
+                        {workshopDocumentation && <img src={workshopDocumentation} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '200px', marginLeft: '10px' }} />}
                       </div>
                       <button
                         type="button"
@@ -586,7 +637,7 @@ function Curricular() {
                         description: "",
                         dates: { from: "", to: "" },
                         skillsGained: "",
-                        documentation: "",
+                        workshopDocumentation: null,
                       })
                     }
                   >
@@ -597,8 +648,8 @@ function Curricular() {
             </FieldArray>
             <br />
             <button type="submit" disabled={isSubmitting} className="submit-button">
-            Save & Next
-            </button> 
+              Save & Next
+            </button>
           </Form>
         )}
       </Formik>

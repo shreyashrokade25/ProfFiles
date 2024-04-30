@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Formik, Form } from 'formik';
 import { useLocation } from "react-router-dom";
 import { TempStorage } from "../TempStorage";
@@ -19,6 +19,7 @@ const ViewProfile = () => {
         communityServiceData,
         workshopData,
         projectData,
+        resetContextData,
     } = useContext(TempStorage);
 
     const combinedData = location.state?.combinedData || null;
@@ -33,7 +34,7 @@ const ViewProfile = () => {
         : [];
     const clubs = Array.isArray(clubData) ? clubData : [];
     const events = Array.isArray(eventData) ? eventData : [];
-    const communityServices = Array.isArray(communityServiceData)
+    const communityService = Array.isArray(communityServiceData)
         ? communityServiceData
         : [];
     const workshops = Array.isArray(workshopData) ? workshopData : [];
@@ -42,13 +43,15 @@ const ViewProfile = () => {
     const exams = Array.isArray(examData) ? examData : [];
     const projects = Array.isArray(projectData) ? projectData : [];
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (values, { resetForm }) => {
         console.log("Student Data: ", combinedData);
         try {
             const response = await axios.post('http://localhost:3001/proffile/save-proffile', combinedData);
 
             if (response.status === 200) {
                 console.log(response.data);
+                resetForm(); // Reset the form
+                resetContextData(); 
             } else {
                 throw new Error('Failed to save data');
             }
@@ -66,7 +69,7 @@ const ViewProfile = () => {
         !exams.length &&
         !clubs.length &&
         !events.length &&
-        !communityServices.length &&
+        !communityService.length &&
         !workshops.length &&
         !projects.length
     ) {
@@ -83,6 +86,7 @@ const ViewProfile = () => {
         return (
             <div className="personal-details-container">
                 <h2>Personal Details</h2>
+                <img src={personalDetailsData.photo} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '200px', marginLeft: '10px' }} />
                 <p>Name: {personalDetailsData.studentName}</p>
                 <p>Date of Birth: {personalDetailsData.dob}</p>
                 <p>Gender: {personalDetailsData.gender}</p>
@@ -149,7 +153,7 @@ const ViewProfile = () => {
                     <p>Completed Or Pursuing: {currentCourse.completedOrContinue}</p>
                     <p>Gap Years: {currentCourse.gapYears}</p>
                     <p>Mode (Regular/Distance): {currentCourse.mode}</p>
-                    <p>Results (Sem wise with Image): {currentCourse.result}</p>
+                    <img src={currentCourse.photo} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '200px', marginLeft: '10px' }} />
                     {/* Add more fields as needed */}
                 </div>
                 <div>
@@ -171,7 +175,10 @@ const ViewProfile = () => {
                             <p>Result: {qualification.result}</p>
                             <p>Percentage: {qualification.percentage}</p>
                             <p>Attempts: {qualification.attempts}</p>
-                            <p>Upload Marksheet: {qualification.marksheet}</p>
+                            <div>
+                                <p>Uploaded Marksheet:</p>
+                                <img src={qualification.marksheet} alt={`Marksheet ${index + 1}`} style={{ maxWidth: '200px', maxHeight: '200px' }} />
+                            </div>
                             <p>
                                 Was any Gap in this Qualification/Course?: {qualification.gap}
                             </p>
@@ -219,8 +226,10 @@ const ViewProfile = () => {
                         <p>Participation Level: {event.participationLevel}</p>
                         <p>Achievement: {event.achievement}</p>
                         <p>Year Participated: {event.yearParticipated}</p>
-                        <p>Certificate: {event.certificate}</p>
-                        {/* Add more fields as needed */}
+                        <div>
+                            <p>Uploaded Certificate:</p>
+                            <img src={event.eventCertificate} alt={`Certficate ${index + 1}`} style={{ maxWidth: '200px', maxHeight: '200px' }} />
+                        </div>
                     </div>
                 ))}
             </div>
@@ -228,22 +237,24 @@ const ViewProfile = () => {
     };
 
     const renderCommunityServiceDetails = () => {
-        if (!communityServices.length) {
+        if (!communityService.length) {
             return <div>No Community Service data submitted yet</div>;
         }
         return (
             <div>
                 <h2>Community Service Details</h2>
-                {communityServices.map((service, index) => (
+                {communityService.map((activity, index) => (
                     <div key={index}>
                         <h3>Field {index + 1}</h3>
-                        <p>Activity Name: {service.activityName}</p>
-                        <p>Organization: {service.organization}</p>
-                        <p>Description: {service.description}</p>
-                        <p>Duration: {service.duration.from} to {service.duration.to}</p>
-                        <p>Impact: {service.impact}</p>
-                        <p>Documentation: {service.documentation}</p>
-                        {/* Add more fields as needed */}
+                        <p>Activity Name: {activity.activityName}</p>
+                        <p>Organization: {activity.organization}</p>
+                        <p>Description: {activity.description}</p>
+                        <p>Duration: {activity.duration.from} to {activity.duration.to}</p>
+                        <p>Impact: {activity.impact}</p>
+                        <div>
+                            <p>Uploaded Documentation:</p>
+                            <img src={activity.csDocumentation} alt={`Certficate ${index + 1}`} style={{ maxWidth: '200px', maxHeight: '200px' }} />
+                        </div>
                     </div>
                 ))}
             </div>
@@ -265,8 +276,10 @@ const ViewProfile = () => {
                         <p>Description: {workshop.description}</p>
                         <p>Dates: {workshop.dates.from} to {workshop.dates.to}</p>
                         <p>Skills: {workshop.skills}</p>
-                        <p>Documentation: {workshop.documentation}</p>
-                        {/* Add more fields as needed */}
+                        <div>
+                            <p>Uploaded Documentation:</p>
+                            <img src={workshop.workshopDocumentation} alt={`Certficate ${index + 1}`} style={{ maxWidth: '200px', maxHeight: '200px' }} />
+                        </div>
                     </div>
                 ))}
             </div>
@@ -291,9 +304,12 @@ const ViewProfile = () => {
                         <p>Achievement date: {achievement.date}</p>
                         <p>Duration: {achievement.duration}</p>
                         <p>Platform: {achievement.platform}</p>
-                        <p>Certificate URL: {achievement.certificateURL}</p>
                         <p>Skills: {achievement.skills}</p>
-                        {/* Add more fields as needed */}
+                        <p>Certificate URL: {achievement.certificateURL}</p>
+                        <div>
+                            <p>Achievement Certificate:</p>
+                            <img src={achievement.achievementCertificate} alt={`Certficate ${index + 1}`} style={{ maxWidth: '200px', maxHeight: '200px' }} />
+                        </div>
                     </div>
                 ))}
             </div>
@@ -318,7 +334,10 @@ const ViewProfile = () => {
                         <p>Achievements: {internship.achievements}</p>
                         <p>Supervisor :{internship.supervisor}</p>
                         <p>Feedback :{internship.feedback}</p>
-                        <p>Certificate: {internship.certificate}</p>
+                        <div>
+                            <p>Internship Certificate: </p>
+                            <img src={internship.internshipCertificate} alt={`Certficate ${index + 1}`} style={{ maxWidth: '200px', maxHeight: '200px' }} />
+                        </div>
                     </div>
                 ))}
             </div>
@@ -340,7 +359,10 @@ const ViewProfile = () => {
                         <p>Score: {exam.score}</p>
                         <p>Rank: {exam.rank}</p>
                         <p>Percentile: {exam.percentile}</p>
-                        {/* Add more fields as needed */}
+                        <div>
+                            <p>Uploaded Documentation:</p>
+                            <img src={exam.examCertificate} alt={`Certficate ${index + 1}`} style={{ maxWidth: '200px', maxHeight: '200px' }} />
+                        </div>
                     </div>
                 ))}
             </div>
@@ -369,8 +391,10 @@ const ViewProfile = () => {
                         <p>Challenges Faced: {project.challengesFaced}</p>
                         <p>License: {project.license}</p>
                         <p>References or Citations: {project.references}</p>
-
-                        {/* Add more fields as needed */}
+                        <div>
+                            <p>Project Certificates:</p>
+                            <img src={project.projectCertificate} alt={`Certficate ${index + 1}`} style={{ maxWidth: '200px', maxHeight: '200px' }} />
+                        </div>
                     </div>
                 ))}
             </div>
@@ -391,7 +415,17 @@ const ViewProfile = () => {
             {renderExamDetails()}
             {renderProjectDetails()}
             <br />
-            <button type="submit" onClick={handleSubmit}>Submit</button>
+            <Formik
+                initialValues={{}}
+                onSubmit={handleSubmit}
+            >
+                {({ isSubmitting}) => (
+                    <Form>
+                        <button type="submit" disabled={isSubmitting}>Submit</button>
+                        <button type="reset" onClick={() => {resetContextData();}}>Reset</button>
+                    </Form>
+                )}
+            </Formik>
         </div>
     );
 };

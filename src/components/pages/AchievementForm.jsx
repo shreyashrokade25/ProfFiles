@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import "../styles/styles.css";
 import { Formik, Form, FieldArray, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -7,12 +7,15 @@ import { TempStorage } from "../TempStorage";
 import Label from "../layout/Label";
 
 function AchievementForm() {
-  const { setAchievementData, setInternshipData, setExamData } =
-    useContext(TempStorage); // Use the context
+  const { setAchievementData, setInternshipData, setExamData } = useContext(TempStorage); 
   const navigate = useNavigate();
 
+  const [achievementCertificate, setAchievementCertificate] = useState(null);
+  const [internshipCertificate, setInternshipCertificate] = useState(null);
+  const [examCertificate, setExamCertificate] = useState(null);
+
   const initialValues = {
-    achievementscertificate: [
+    achievements: [
       {
         title: "",
         description: "",
@@ -21,8 +24,9 @@ function AchievementForm() {
         date: "",
         duration: "",
         platform: "",
-        certificateURL: "",
         skills: "",
+        achievementCertificate: null,
+        certificateURL: "",
       },
     ],
     internships: [
@@ -35,7 +39,7 @@ function AchievementForm() {
         achievements: "",
         supervisor: "",
         feedback: "",
-        certificate: "",
+        internshipCertificate: null,
       },
     ],
     exams: [
@@ -45,6 +49,7 @@ function AchievementForm() {
         score: "",
         rank: "",
         percentile: "",
+        examCertificate: null,
       },
     ],
   };
@@ -139,20 +144,43 @@ function AchievementForm() {
   });
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
-    console.log("Achievement/Certification Details: ", values);
-    // console.log("Achievement Data", achievementData);
-
     try {
-      const combinedData = {
-        achievementsCertificates: values.achievementscertificate,
-        internships: values.internships,
-        exams: values.exams,
-      };
+      const updatedAchievements = values.achievements.map((achievement, index) => {
+        if (values.achievements[index].achievementCertificate) {
+          const achievementCertificateUrl = URL.createObjectURL(values.achievements[index].achievementCertificate);
+          return { ...achievement, achievementCertificate: achievementCertificateUrl };
+        }
+        return achievement;
+      });
+      const updatedInternship = values.internships.map((internship, index) => {
+        if (values.internships[index].internshipCertificate) {
+          const internshipCertificateUrl = URL.createObjectURL(values.internships[index].internshipCertificate);
+          return { ...internship, internshipCertificate: internshipCertificateUrl };
+        }
+        return internship;
+      });
+      const updatedExams = values.exams.map((exam, index) => {
+        if (values.exams[index].examCertificate) {
+          const examCertificateUrl = URL.createObjectURL(values.exams[index].examCertificate);
+          return { ...exam, examCertificate: examCertificateUrl };
+        }
+        return exam;
+      });
 
+      const combinedData = {
+        achievementsCertificates: updatedAchievements,
+        internships: updatedInternship,
+        exams: updatedExams,
+      };
+      
       // Update the context with all combined data
+      console.log("Achievement/Certification Details: ", values);
       setAchievementData(combinedData.achievementsCertificates);
+      setAchievementCertificate(null);
       setInternshipData(combinedData.internships); // Assuming you have setInternshipData in your context
+      setInternshipCertificate(null); 
       setExamData(combinedData.exams); // Assuming you have setExamData in your context
+      setExamCertificate(null);
 
       // Pass all combined data in the navigation state
       navigate("/add-ProjectDetails", { state: { combinedData } });
@@ -175,38 +203,39 @@ function AchievementForm() {
           values,
           errors,
           touched,
+          setFieldValue,
           handleBlur,
           handleChange,
         }) => (
           <Form>
-            <FieldArray name="achievementscertificate">
+            <FieldArray name="achievements">
               {({ push, remove }) => (
                 <fieldset className="fieldset">
                   <h3>Achievements and Certifications</h3>
                   <legend>
                     <u>Achievement/Certification Details</u>
                   </legend>
-                  {values.achievementscertificate.map((achievement, index) => (
+                  {values.achievements.map((achievement, index) => (
                     <div key={index}>
                       <div>
                         <label>{`Achievement Title ${index + 1}:`}</label>
                         <Field
                           type="text"
-                          name={`achievementscertificate[${index}].title`}
+                          name={`achievements[${index}].title`}
                           value={achievement.title || ""}
                           autoComplete="off"
                           placeholder="Enter title of achievement or certificate"
                           onChange={handleChange}
                           onBlur={handleBlur}
                         />
-                        {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].title &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].title ? (
+                        {errors.achievements &&
+                        errors.achievements[index] &&
+                        errors.achievements[index].title &&
+                        touched.achievements &&
+                        touched.achievements[index] &&
+                        touched.achievements[index].title ? (
                           <p className="text-danger">
-                            {errors.achievementscertificate[index].title}
+                            {errors.achievements[index].title}
                           </p>
                         ) : null}
                       </div>
@@ -214,19 +243,19 @@ function AchievementForm() {
                         <label>Achievement Description:</label>
                         <Field
                           as="textarea"
-                          name={`achievementscertificate[${index}].description`}
+                          name={`achievements[${index}].description`}
                           value={achievement.description}
                           autoComplete="off"
                           placeholder="Describe the achievement or certificate"
                           onChange={handleChange}
                           onBlur={handleBlur}
                         />
-                        {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].description &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].description ? (
+                        {errors.achievements &&
+                        errors.achievements[index] &&
+                        errors.achievements[index].description &&
+                        touched.achievements &&
+                        touched.achievements[index] &&
+                        touched.achievements[index].description ? (
                           <p className="text-danger">
                             {errors.achievementscertificate[index].description}
                           </p>
@@ -236,21 +265,21 @@ function AchievementForm() {
                         <label>Type of Achievement/Certification:</label>
                         <Field
                           type="text"
-                          name={`achievementscertificate[${index}].type`}
+                          name={`achievements[${index}].type`}
                           value={achievement.type}
                           autoComplete="off"
                           placeholder="Enter type (e.g., competition, certification)"
                           onChange={handleChange}
                           onBlur={handleBlur}
                         />
-                        {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].type &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].type ? (
+                        {errors.achievements &&
+                        errors.achievements[index] &&
+                        errors.achievements[index].type &&
+                        touched.achievements &&
+                        touched.achievements[index] &&
+                        touched.achievements[index].type ? (
                           <p className="text-danger">
-                            {errors.achievementscertificate[index].type}
+                            {errors.achievements[index].type}
                           </p>
                         ) : null}
                       </div>
@@ -258,21 +287,21 @@ function AchievementForm() {
                         <label>Provider/Organizer:</label>
                         <Field
                           type="text"
-                          name={`achievementscertificate[${index}].provider`}
+                          name={`achievements[${index}].provider`}
                           value={achievement.provider}
                           autoComplete="off"
                           placeholder="Enter provider (e.g., school, organization)"
                           onChange={handleChange}
                           onBlur={handleBlur}
                         />
-                        {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].provider &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].type ? (
+                        {errors.achievements &&
+                        errors.achievements[index] &&
+                        errors.achievements[index].provider &&
+                        touched.achievements &&
+                        touched.achievements[index] &&
+                        touched.achievements[index].type ? (
                           <p className="text-danger">
-                            {errors.achievementscertificate[index].provider}
+                            {errors.achievements[index].provider}
                           </p>
                         ) : null}
                       </div>
@@ -280,21 +309,21 @@ function AchievementForm() {
                         <label>Date of Achievement:</label>
                         <Field
                           type="date"
-                          name={`achievementscertificate[${index}].date`}
+                          name={`achievements[${index}].date`}
                           value={achievement.date}
                           autoComplete="off"
                           placeholder="Enter date of achievement or certification"
                           onChange={handleChange}
                           onBlur={handleBlur}
                         />
-                        {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].date &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].date ? (
+                        {errors.achievements &&
+                        errors.achievements[index] &&
+                        errors.achievements[index].date &&
+                        touched.achievements &&
+                        touched.achievements[index] &&
+                        touched.achievements[index].date ? (
                           <p className="text-danger">
-                            {errors.achievementscertificate[index].date}
+                            {errors.achievements[index].date}
                           </p>
                         ) : null}
                       </div>
@@ -302,21 +331,21 @@ function AchievementForm() {
                         <label>Duration (for courses):</label>
                         <Field
                           type="text"
-                          name={`achievementscertificate[${index}].duration`}
+                          name={`achievements[${index}].duration`}
                           value={achievement.duration}
                           autoComplete="off"
                           placeholder="Enter duration (for e.g. 1 month,1 year)"
                           onChange={handleChange}
                           onBlur={handleBlur}
                         />
-                        {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].duration &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].duration ? (
+                        {errors.achievements &&
+                        errors.achievements[index] &&
+                        errors.achievements[index].duration &&
+                        touched.achievements &&
+                        touched.achievements[index] &&
+                        touched.achievements[index].duration ? (
                           <p className="text-danger">
-                            {errors.achievementscertificate[index].duration}
+                            {errors.achievements[index].duration}
                           </p>
                         ) : null}
                       </div>
@@ -324,71 +353,88 @@ function AchievementForm() {
                         <label>Platform/Website:</label>
                         <Field
                           type="text"
-                          name={`achievementscertificate[${index}].platform`}
+                          name={`achievements[${index}].platform`}
                           value={achievement.platform}
                           autoComplete="off"
                           placeholder="Enter platform or context"
                           onChange={handleChange}
                           onBlur={handleBlur}
                         />
-                        {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].platform &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].platform ? (
+                        {errors.achievements &&
+                        errors.achievements[index] &&
+                        errors.achievements[index].platform &&
+                        touched.achievements &&
+                        touched.achievements[index] &&
+                        touched.achievements[index].platform ? (
                           <p className="text-danger">
-                            {errors.achievementscertificate[index].platform}
+                            {errors.achievements[index].platform}
                           </p>
                         ) : null}
                       </div>
-                      <div>
-                        <label>Certificate URL:</label>
-                        <Field
-                          type="url"
-                          name={`achievementscertificate[${index}].certificateURL`}
-                          value={achievement.certificateURL}
-                          autoComplete="off"
-                          placeholder="Enter certificate URL"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                        />
-                        {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].certificateURL &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index]
-                          .certificateURL ? (
-                          <p className="text-danger">
-                            {
-                              errors.achievementscertificate[index]
-                                .certificateURL
-                            }
-                          </p>
-                        ) : null}
-                      </div>
+
                       <div>
                         <label>Skills/Knowledge Gained:</label>
                         <Field
                           as="textarea"
-                          name={`achievementscertificate[${index}].skills`}
+                          name={`achievements[${index}].skills`}
                           value={achievement.skills}
                           autoComplete="off"
                           placeholder="List relevant skills acquired"
                           onChange={handleChange}
                           onBlur={handleBlur}
                         />
-                        {errors.achievementscertificate &&
-                        errors.achievementscertificate[index] &&
-                        errors.achievementscertificate[index].skills &&
-                        touched.achievementscertificate &&
-                        touched.achievementscertificate[index] &&
-                        touched.achievementscertificate[index].skills ? (
+                        {errors.achievements &&
+                        errors.achievements[index] &&
+                        errors.achievements[index].skills &&
+                        touched.achievements &&
+                        touched.achievements[index] &&
+                        touched.achievements[index].skills ? (
                           <p className="text-danger">
-                            {errors.achievementscertificate[index].skills}
+                            {errors.achievements[index].skills}
                           </p>
                         ) : null}
+                      </div>
+
+                      <div>
+                        <label>Certificate URL:</label>
+                        <Field
+                          type="url"
+                          name={`achievements[${index}].certificateURL`}
+                          value={achievement.certificateURL}
+                          autoComplete="off"
+                          placeholder="Enter certificate URL"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.achievements &&
+                        errors.achievements[index] &&
+                        errors.achievements[index].certificateURL &&
+                        touched.achievements &&
+                        touched.achievements[index] &&
+                        touched.achievements[index]
+                          .certificateURL ? (
+                          <p className="text-danger">
+                            { errors.achievements[index].certificateURL }
+                          </p>
+                        ) : null}
+                      </div>
+
+                      <div>
+                        <Label required={false}>Achievement Certificate: </Label>
+                        <input
+                          type="file"
+                          id={`achievements.[${index}].achievementCertificate`}
+                          name={`achievements.[${index}].achievementCertificate`}
+                          accept=".jpg,.jpeg,.pdf"
+                          onChange={(e) => {
+                            const achievementCertificate = e.currentTarget.files[0];
+                            setFieldValue(`achievements.[${index}].achievementCertificate`, achievementCertificate);
+                          }}
+                          className="input-field-small"
+                        />
+
+                        <ErrorMessage name={`achievements[${index}].achievementCertificate`} component="div" className="text-danger" /> {/* Corrected */}
+                        {achievementCertificate && <img src={achievementCertificate} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '200px', marginLeft: '10px' }} />}
                       </div>
 
                       <button type="button" onClick={() => remove(index)}>
@@ -407,8 +453,9 @@ function AchievementForm() {
                         date: "",
                         duration: "",
                         platform: "",
-                        certificateURL: "",
                         skills: "",
+                        achievementCertificate: null,
+                        certificateURL: "",
                       })
                     }
                   >
@@ -604,25 +651,21 @@ function AchievementForm() {
                         ) : null}
                       </div>
                       <div>
-                        <label>Certificate (required):</label>
-                        <Field
+                        <Label required={false}>Internship Certificate: </Label>
+                        <input
                           type="file"
-                          name={`internships[${index}].certificate`}
-                          value={internship.certificate}
-                          autoComplete="off"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
+                          id={`internships.[${index}].internshipCertificate`}
+                          name={`internships.[${index}].internshipCertificate`}
+                          accept=".jpg,.jpeg,.pdf"
+                          onChange={(e) => {
+                            const internshipCertificate = e.currentTarget.files[0];
+                            setFieldValue(`internships.[${index}].internshipCertificate`, internshipCertificate);
+                          }}
+                          className="input-field-small"
                         />
-                        {errors.internships &&
-                        errors.internships[index] &&
-                        errors.internships[index].certificate &&
-                        touched.internships &&
-                        touched.internships[index] &&
-                        touched.internships[index].certificate ? (
-                          <p className="text-danger">
-                            {errors.internships[index].certificate}
-                          </p>
-                        ) : null}
+
+                        <ErrorMessage name={`internships[${index}].internshipCertificate`} component="div" className="text-danger" />
+                        {internshipCertificate && <img src={internshipCertificate} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '200px', marginLeft: '10px' }} />}
                       </div>
 
                       <button type="button" onClick={() => remove(index)}>
@@ -642,7 +685,7 @@ function AchievementForm() {
                         achievement: "",
                         supervisor: "",
                         feedback: "",
-                        certificate: "",
+                        internshipCertificate: null,
                       })
                     }
                   >
@@ -773,6 +816,24 @@ function AchievementForm() {
                         ) : null}
                       </div>
 
+                      <div>
+                        <Label required={false}>Exam Certificate: </Label>
+                        <input
+                          type="file"
+                          id={`exams.[${index}].examCertificate`}
+                          name={`exams.[${index}].examCertificate`}
+                          accept=".jpg,.jpeg,.pdf"
+                          onChange={(e) => {
+                            const examCertificate = e.currentTarget.files[0];
+                            setFieldValue(`exams.[${index}].examCertificate`, examCertificate);
+                          }}
+                          className="input-field-small"
+                        />
+
+                        <ErrorMessage name={`exams[${index}].examCertificate`} component="div" className="text-danger" />
+                        {examCertificate && <img src={examCertificate} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '200px', marginLeft: '10px' }} />}
+                      </div>
+
                       <button type="button" onClick={() => remove(index)}>
                         Remove
                       </button>
@@ -787,6 +848,7 @@ function AchievementForm() {
                         score: "",
                         rank: "",
                         percentile: "",
+                        examCertificate: null,
                       })
                     }
                   >
